@@ -1,15 +1,19 @@
-import client from "@/lib/bungie/client";
+import { $http } from "@/lib/bungie";
+import { useManifestStore } from "@/lib/store/manifestStore";
+import {
+  BungieMembershipType,
+  DestinyComponentType,
+  getDestinyManifest,
+  getDestinyManifestSlice,
+  getProfile,
+} from "bungie-api-ts/destiny2";
 import Image from "next/image";
 import { Suspense } from "react";
 
 async function Test() {
-  const data = await client.user.getUsersByPrefix("test");
+  const result = await getDestinyManifest($http);
 
-  return (
-    <Suspense fallback={<p>Loading</p>}>
-      <p>{JSON.stringify(data)}</p>
-    </Suspense>
-  );
+  return <p>{JSON.stringify(result.Response)}</p>;
 }
 
 export default function Home() {
