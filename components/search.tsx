@@ -1,6 +1,10 @@
 "use client";
 import { $http, PlatformIcons } from "@/lib/bungie";
-import { UserSearchResponse, searchByGlobalNamePost } from "bungie-api-ts/user";
+import {
+  UserSearchResponse,
+  UserSearchResponseDetail,
+  searchByGlobalNamePost,
+} from "bungie-api-ts/user";
 import React from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { ScrollAreaThumb } from "@radix-ui/react-scroll-area";
@@ -30,6 +34,14 @@ function SearchResults({ query }: SearchResultsProps) {
     fetchData();
   }, [query]);
 
+  function onClick(result: UserSearchResponseDetail) {
+    const { destinyMemberships } = result;
+    console.log(
+      result.bungieNetMembershipId,
+      destinyMemberships[0].membershipId
+    );
+  }
+
   return typeof data !== "undefined" && query !== "" ? (
     <ScrollArea className="!absolute bg-background z-50 top-8 w-full rounded-lg shadow  break-words">
       <div className="w-full space-y-1 max-h-[128px]">
@@ -37,6 +49,7 @@ function SearchResults({ query }: SearchResultsProps) {
           <div
             key={crypto.randomUUID()}
             className="w-full cursor-pointer hover:bg-secondary"
+            onClick={() => onClick(result)}
           >
             <div
               key={crypto.randomUUID()}
