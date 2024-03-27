@@ -1,43 +1,36 @@
-import { CharacterEmblems } from "@/components/character-emblem";
-import { Container } from "@/components/container";
 import { Countdown } from "@/components/countdown";
-import { DestinyLoadout } from "@/components/loadout";
-import { Milestones } from "@/components/milestones";
 import { WeeklyNightfall } from "@/components/nightfall";
-import { Perk } from "@/components/perk";
-import { ProfileHeader } from "@/components/profile-header";
 import { SearchBar } from "@/components/search";
-import { Input } from "@/components/ui/input";
-import { $http, PlatformIcons, getManifest } from "@/lib/bungie";
+import { $http } from "@/lib/bungie";
 import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
 import { WeeklyMilestones } from "./_components/milestones";
 
 export default async function Home() {
-  const result = await getProfile($http, {
-    destinyMembershipId: "4611686018436921115",
-    components: [
-      DestinyComponentType.Profiles,
-      DestinyComponentType.Characters,
-      DestinyComponentType.CharacterEquipment,
-      DestinyComponentType.ItemPerks,
-    ],
-    membershipType: 1,
-  });
+  // const result = await getProfile($http, {
+  //   destinyMembershipId: "4611686018436921115",
+  //   components: [
+  //     DestinyComponentType.Profiles,
+  //     DestinyComponentType.Characters,
+  //     DestinyComponentType.CharacterEquipment,
+  //     DestinyComponentType.ItemPerks,
+  //   ],
+  //   membershipType: 1,
+  // });
 
-  const {
-    Response: {
-      profile: { data },
-      characters: { data: characterData },
-      characterEquipment: { data: equipmentData },
-      itemComponents: {
-        perks: { data: perks },
-      },
-    },
-  } = result;
+  // const {
+  //   Response: {
+  //     profile: { data },
+  //     characters: { data: characterData },
+  //     characterEquipment: { data: equipmentData },
+  //     itemComponents: {
+  //       perks: { data: perks },
+  //     },
+  //   },
+  // } = result;
 
-  if (!data || !characterData || !equipmentData || !perks) {
-    throw new Error("Failed to fetch");
-  }
+  // if (!data || !characterData || !equipmentData || !perks) {
+  //   throw new Error("Failed to fetch");
+  // }
 
   return (
     <main className="min-h-screen  w-full bg-slate-900">

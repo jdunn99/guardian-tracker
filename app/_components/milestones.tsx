@@ -1,7 +1,6 @@
 import { $http, getManifest2 } from "@/lib/bungie";
 import {
   DestinyActivityChallengeDefinition,
-  DestinyActivityDefinition,
   DestinyActivityRewardDefinition,
   DestinyInventoryItemDefinition,
   DestinyManifestSlice,
@@ -30,7 +29,9 @@ export function parseActivityRewards(
   for (const reward of rewards) {
     for (const rewardItem of reward.rewardItems) {
       result.push(
-        inventoryManifest[rewardItem.itemHash as keyof typeof inventoryManifest]
+        inventoryManifest[
+          rewardItem.itemHash as unknown as keyof typeof inventoryManifest
+        ] as DestinyInventoryItemDefinition
       );
     }
   }
@@ -47,8 +48,9 @@ function parseRewardsFromActivity(
   if (hash === WEEKLY_MISSION_HASH) {
     result.push(
       inventoryManifest[
-        rewards[0].rewardItems[0].itemHash as keyof typeof inventoryManifest
-      ]
+        rewards[0].rewardItems[0]
+          .itemHash as unknown as keyof typeof inventoryManifest
+      ] as DestinyInventoryItemDefinition
     );
   }
 
@@ -56,8 +58,8 @@ function parseRewardsFromActivity(
     for (const dummyReward of challenge.dummyRewards) {
       result.push(
         inventoryManifest[
-          dummyReward.itemHash as keyof typeof inventoryManifest
-        ]
+          dummyReward.itemHash as unknown as keyof typeof inventoryManifest
+        ] as DestinyInventoryItemDefinition
       );
     }
   }
