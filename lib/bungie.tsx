@@ -1,4 +1,6 @@
 import {
+  AllDestinyManifestComponents,
+  GetDestinyManifestSliceParams,
   HttpClientConfig,
   getDestinyManifest,
   getDestinyManifestSlice,
@@ -44,7 +46,10 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
   const result = await fetch(parsedUrl, {
     headers: {
       "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY!,
+      "Content-type": "application/json",
+      accept: "application/json",
     },
+    cache: "no-cache",
     method,
     body: JSON.stringify(body),
   });
@@ -79,10 +84,32 @@ export async function getManifest() {
       "DestinySandboxPerkDefinition",
       "DestinySocketCategoryDefinition",
       "DestinySandboxPerkDefinition",
+      "DestinyMilestoneDefinition",
+      "DestinyObjectiveDefinition",
+      "DestinyActivityDefinition",
+      "DestinyActivityModifierDefinition",
     ],
   });
 
   return manifest;
+}
+
+export async function getManifest2<
+  T extends (keyof AllDestinyManifestComponents)[]
+>(tableNames: T) {
+  const manifest = await getDestinyManifest($http);
+
+  if (typeof manifest.Response === "undefined") {
+    throw new Error("Something went wrong fetching the manifest");
+  }
+
+  console.log(tableNames);
+
+  return await getDestinyManifestSlice($http, {
+    destinyManifest: manifest.Response,
+    language: "en",
+    tableNames,
+  });
 }
 
 // If I ever need to use Manifest in props, I can just call this type
