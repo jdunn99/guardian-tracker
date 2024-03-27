@@ -36,7 +36,7 @@ export async function DestinyLoadout({
 
   // Seems to work faster than directly importing the manifest
   const file = await fs.readFile(
-    process.cwd() + "/app/inventoryManifest.json",
+    process.cwd() + "/app/inventorymanifest.json",
     "utf-8"
   );
   const inventoryManifest: Record<string, DestinyInventoryItemDefinition> =

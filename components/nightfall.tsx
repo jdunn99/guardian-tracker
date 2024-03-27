@@ -9,13 +9,13 @@ import { parseActivityRewards } from "@/app/_components/milestones";
 import { HoverItem } from "./hover-item";
 
 const WEEKLY_NIGHTFALL_HASH = 2029743966;
-const SHIELD_ICONS = {
+export const SHIELD_ICONS = {
   Arc: DamageIcons[2],
   Solar: DamageIcons[3],
   Void: DamageIcons[4],
 };
 
-const CHAMPION_ICONS = {
+export const CHAMPION_ICONS = {
   "Shield-Piercing": {
     name: "Barrier",
     icon: "https://www.bungie.net/common/destiny2_content/icons/eb04e3267eee527d64d85af3f0a3ec6a.png",
@@ -74,7 +74,7 @@ export async function WeeklyNightfall() {
   const { shields, champions } = await parseModifiers(activity.modifierHashes);
 
   return (
-    <div className="flex items-start gap-2 pt-3">
+    <div className="flex items-start gap-2 pt-3 shrink-0">
       <img
         src={`https://bungie.net${hashed.pgcrImage}`}
         className="w-24 h-24 border-slate-700 border shadow"
@@ -83,7 +83,7 @@ export async function WeeklyNightfall() {
         <h1 className="text-white font-semibold">
           {hashed.displayProperties.description}
         </h1>
-        <div className="flex gap-4 items-start">
+        <div className="flex sm:flex-row flex-col gap-4 items-start flex-wrap">
           <div className="space-y-2">
             <p className="text-slate-300 font-medium text-sm">Shields</p>
             {shields?.map((shield) => (

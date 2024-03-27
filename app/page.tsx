@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/search";
 import { $http } from "@/lib/bungie";
 import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
 import { WeeklyMilestones } from "./_components/milestones";
+import { DailyLostSector } from "./_components/lost-sector";
 
 export default async function Home() {
   // const result = await getProfile($http, {
@@ -81,15 +82,24 @@ export default async function Home() {
           <div className="flex items-center justify-center text-xl text-slate-300 font-bold">
             <Countdown end="2024-04-02T17:00:00Z" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
+          <div className="grid sm:grid-cols-2 gap-4 w-full max-w-screen-md mx-auto px-4">
+            <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg ">
               <h1 className="text-lg font-semibold text-yellow-500">
                 Nightfall this Week
               </h1>
               <WeeklyNightfall />
             </div>
-            <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
-              <p>Hi</p>
+            <div className="grid gap-2 grid-rows-2">
+              <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
+                <h1 className="text-lg font-semibold text-yellow-500">
+                  Today&apos;s Lost Sector
+                </h1>
+                <DailyLostSector />
+              </div>
+
+              <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
+                <p>Hi</p>
+              </div>
             </div>
           </div>
         </div>

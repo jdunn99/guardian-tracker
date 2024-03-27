@@ -9,6 +9,7 @@ import {
   getDestinyManifestComponent,
 } from "bungie-api-ts/destiny2";
 import fs from "fs";
+import { processFile } from "@/lib/lost-sectors/parse";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -58,6 +59,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const b = new Date();
+  b.setUTCHours(0, 0, 0, 0);
+  console.log(new Date(1717286400000), b.getTime());
+
   return (
     <html lang="en">
       <body className={inter.className}>
