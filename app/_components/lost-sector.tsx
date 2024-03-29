@@ -1,3 +1,4 @@
+import { Countdown } from "@/components/countdown";
 import { CHAMPION_ICONS, SHIELD_ICONS } from "@/components/nightfall";
 import { $http, getManifest, getManifest2 } from "@/lib/bungie";
 import lostSectors from "@/lib/lost-sectors/lost-sectors.json";
@@ -43,6 +44,11 @@ export async function DailyLostSector() {
   const date = new Date();
   date.setUTCHours(0, 0, 0, 0);
 
+  // Calculate reset time
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(13, 0, 0, 0);
+
   const lostSector = lostSectors[
     date.getTime() as unknown as keyof typeof lostSectors
   ] as LostSectorData;
@@ -62,99 +68,111 @@ export async function DailyLostSector() {
   const { pgcrImage } = DestinyActivityDefinition[result.hash];
 
   return (
-    <div className="flex items-start gap-2">
-      <img
-        src={`https://bungie.net${pgcrImage}`}
-        className="w-16 h-16 border border-slate-700 shadow"
-      />
-      <div className="space-y-2">
-        <h1 className="text-white font-semibold">
-          {lostSector["Lost Sector"]}
-          <span className="ml-1 text-yellow-500 font-bold text-xs bg-slate-900 px-1 py-0.5 rounded">
-            {lostSector.Location}
-          </span>
-        </h1>
-        <p className="text-slate-200 text-sm">
-          Exotic Armor:{" "}
-          <span className="text-yellow-500">{lostSector["Armor Type"]}</span>
-        </p>
+    <div>
+      <div className="flex items-start gap-2">
+        <img
+          src={`https://bungie.net${pgcrImage}`}
+          className="w-16 h-16 border border-slate-700 shadow"
+        />
+        <div className="space-y-2">
+          <h1 className="text-white font-semibold">
+            {lostSector["Lost Sector"]}
+            <span className="ml-1 text-yellow-500 font-bold text-xs bg-slate-900 px-1 py-0.5 rounded">
+              {lostSector.Location}
+            </span>
+          </h1>
 
-        <div className="flex gap-4">
-          {/* Shields */}
-          <div className="space-y-2">
-            <p className="text-slate-200 text-sm">Shields</p>
+          <p className="text-slate-200 text-sm">
+            Exotic Armor:{" "}
+            <span className="text-yellow-500">{lostSector["Armor Type"]}</span>
+          </p>
 
-            <div className="flex items-center gap-1">
-              <img
-                src={
-                  SHIELD_ICONS[lostSector.Shield as keyof typeof SHIELD_ICONS]
-                }
-                className="w-4 h-4"
-              />
-              <span className="text-xs text-slate-400">
-                {lostSector.Shield}
-              </span>
-            </div>
+          <div className="flex gap-4">
+            {/* Shields */}
+            <div className="space-y-2">
+              <p className="text-slate-200 text-sm">Shields</p>
 
-            <div className="flex items-center gap-1">
-              <img
-                src={
-                  SHIELD_ICONS[
-                    lostSector["Shield.1"] as keyof typeof SHIELD_ICONS
-                  ]
-                }
-                className="w-4 h-4"
-              />
-              <span className="text-xs text-slate-400">
-                {lostSector["Shield.1"]}
-              </span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <p className="text-slate-200 text-sm">Champions</p>
-            {lostSector.Barrier !== "-" ? (
               <div className="flex items-center gap-1">
                 <img
-                  src={CHAMPION_ICONS["Shield-Piercing"].icon}
+                  src={
+                    SHIELD_ICONS[lostSector.Shield as keyof typeof SHIELD_ICONS]
+                  }
                   className="w-4 h-4"
                 />
-                <span className="text-xs text-slate-400">Barrier</span>
+                <span className="text-xs text-slate-400">
+                  {lostSector.Shield}
+                </span>
               </div>
-            ) : null}
-            {lostSector.Overload !== "-" ? (
+
+              {lostSector["Shield.1"] !== "-" ? (
+                <div className="flex items-center gap-1">
+                  <img
+                    src={
+                      SHIELD_ICONS[
+                        lostSector["Shield.1"] as keyof typeof SHIELD_ICONS
+                      ]
+                    }
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs text-slate-400">
+                    {lostSector["Shield.1"]}
+                  </span>
+                </div>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <p className="text-slate-200 text-sm">Champions</p>
+              {lostSector.Barrier !== "-" ? (
+                <div className="flex items-center gap-1">
+                  <img
+                    src={CHAMPION_ICONS["Shield-Piercing"].icon}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs text-slate-400">Barrier</span>
+                </div>
+              ) : null}
+              {lostSector.Overload !== "-" ? (
+                <div className="flex items-center gap-1">
+                  <img
+                    src={CHAMPION_ICONS["Disruption"].icon}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs text-slate-400">Overload</span>
+                </div>
+              ) : null}
+              {lostSector.Unstoppable !== "-" ? (
+                <div className="flex items-center gap-1">
+                  <img
+                    src={CHAMPION_ICONS["Stagger"].icon}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs text-slate-400">Unstoppable</span>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-slate-200 text-sm">Threat</p>
+
               <div className="flex items-center gap-1">
                 <img
-                  src={CHAMPION_ICONS["Disruption"].icon}
+                  src={
+                    SHIELD_ICONS[lostSector.Threat as keyof typeof SHIELD_ICONS]
+                  }
                   className="w-4 h-4"
                 />
-                <span className="text-xs text-slate-400">Overload</span>
+                <span className="text-xs text-slate-400">
+                  {lostSector.Threat}
+                </span>
               </div>
-            ) : null}
-            {lostSector.Unstoppable !== "-" ? (
-              <div className="flex items-center gap-1">
-                <img src={CHAMPION_ICONS["Stagger"].icon} className="w-4 h-4" />
-                <span className="text-xs text-slate-400">Unstoppable</span>
-              </div>
-            ) : null}
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-slate-200 text-sm">Threat</p>
-
-            <div className="flex items-center gap-1">
-              <img
-                src={
-                  SHIELD_ICONS[lostSector.Threat as keyof typeof SHIELD_ICONS]
-                }
-                className="w-4 h-4"
-              />
-              <span className="text-xs text-slate-400">
-                {lostSector.Threat}
-              </span>
             </div>
           </div>
         </div>
       </div>
+      {/* <div className="mt-4">
+        <p className="text-sm text-white">Time remaining</p>
+        <Countdown end={tomorrow.toString()} />
+      </div> */}
     </div>
   );
 }

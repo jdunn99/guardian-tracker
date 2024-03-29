@@ -9,7 +9,7 @@ export function HoverItem(
   const [hovered, setHovered] = React.useState<boolean>(false);
   return (
     <div
-      className="relative w-full hover:text-yellow-500"
+      className="relative  hover:text-yellow-500"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

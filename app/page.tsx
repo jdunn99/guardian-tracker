@@ -5,6 +5,7 @@ import { $http } from "@/lib/bungie";
 import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
 import { WeeklyMilestones } from "./_components/milestones";
 import { DailyLostSector } from "./_components/lost-sector";
+import { WeeklyPVPMilestones } from "./_components/pvp-milestones";
 
 export default async function Home() {
   // const result = await getProfile($http, {
@@ -98,7 +99,10 @@ export default async function Home() {
               </div>
 
               <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
-                <p>Hi</p>
+                <h1 className="text-lg font-semibold text-yellow-500">
+                  Crucible This Week
+                </h1>
+                <WeeklyPVPMilestones />
               </div>
             </div>
           </div>
