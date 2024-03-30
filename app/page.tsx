@@ -6,6 +6,8 @@ import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
 import { WeeklyMilestones } from "./_components/milestones";
 import { DailyLostSector } from "./_components/lost-sector";
 import { WeeklyPVPMilestones } from "./_components/pvp-milestones";
+import { Card, ImageCard } from "@/components/ui/card";
+import Image from "next/image";
 
 export default async function Home() {
   // const result = await getProfile($http, {
@@ -84,27 +86,60 @@ export default async function Home() {
             <Countdown end="2024-04-02T17:00:00Z" />
           </div>
           <div className="grid sm:grid-cols-2 gap-4 w-full max-w-screen-md mx-auto px-4">
-            <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg ">
+            <Card>
               <h1 className="text-lg font-semibold text-yellow-500">
                 Nightfall this Week
               </h1>
               <WeeklyNightfall />
-            </div>
+            </Card>
             <div className="grid gap-2 grid-rows-2">
-              <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
+              <Card>
                 <h1 className="text-lg font-semibold text-yellow-500">
                   Today&apos;s Lost Sector
                 </h1>
                 <DailyLostSector />
-              </div>
+              </Card>
 
-              <div className="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg">
+              <Card>
                 <h1 className="text-lg font-semibold text-yellow-500">
                   Crucible This Week
                 </h1>
                 <WeeklyPVPMilestones />
-              </div>
+              </Card>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 pb-32 w-full">
+        <div className="w-full max-w-screen-lg mx-auto space-y-8">
+          <h1 className="text-center text-white text-2xl font-bold max-w-lg mx-auto">
+            Explore popular builds for each class.
+          </h1>
+          <div className="grid sm:grid-cols-3 gap-4 w-full mx-auto px-4">
+            <ImageCard image="hunter-bg">
+              <div className="space-y-2">
+                <Image src="/hunter.svg" height={32} width={32} alt="Hunter" />
+                Hunter
+              </div>
+            </ImageCard>
+            <ImageCard image="titan-bg">
+              <div className="space-y-4">
+                <Image src="/titan.svg" height={32} width={32} alt="Titan" />
+                Titan
+              </div>
+            </ImageCard>
+            <ImageCard image="warlock-bg">
+              <div className="space-y-1">
+                <Image
+                  src="/warlock.svg"
+                  height={32}
+                  width={32}
+                  alt="Warlock"
+                />
+                Warlock
+              </div>
+            </ImageCard>
           </div>
         </div>
       </section>

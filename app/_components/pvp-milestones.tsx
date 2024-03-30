@@ -2,7 +2,7 @@ import { HoverItem } from "@/components/hover-item";
 import { $http, getManifest2 } from "@/lib/bungie";
 import { getPublicMilestones } from "bungie-api-ts/destiny2";
 
-const TRIALS_HASH = 3842941126;
+const TRIALS_HASH = 3007559996;
 const IRON_BANNER_HASH = 3427325023;
 const WEEKLY_PVP_CHALLENGE_HASH = 1506285920;
 

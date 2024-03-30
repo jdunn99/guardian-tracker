@@ -86,3 +86,24 @@
   background-repeat: no-repeat;
   background-position: 50% 45%;
 }
+
+.hunter-bg {
+  background-image: url("/cayde.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.titan-bg {
+  background-image: url("/zavala.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.warlock-bg {
+  background-image: url("/warlock.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
