@@ -1,12 +1,14 @@
 import { $http, getManifest, getManifest2 } from "@/lib/bungie";
 import {
   DestinyActivityRewardDefinition,
+  DestinyInventoryItemDefinition,
   getPublicMilestones,
 } from "bungie-api-ts/destiny2";
 import { Modifier } from "./modifier";
 import { DamageIcons } from "./inventory-item";
-import { parseActivityRewards } from "@/app/_components/milestones";
+import inventoryManifest from "@/app/inventoryManifest.json";
 import { HoverItem } from "./hover-item";
+import Image from "next/image";
 
 const WEEKLY_NIGHTFALL_HASH = 2029743966;
 export const SHIELD_ICONS = {
@@ -70,22 +72,28 @@ export async function WeeklyNightfall() {
 
   const hashed = DestinyActivityDefinition[activity.activityHash];
 
-  const rewards = parseActivityRewards(hashed.rewards);
   const { shields, champions } = await parseModifiers(activity.modifierHashes);
 
   return (
-    <div className="flex items-start gap-2 pt-3 shrink-0">
-      <img
+    <div className="flex items-start gap-4">
+      <Image
         src={`https://bungie.net${hashed.pgcrImage}`}
-        className="w-24 h-24 border-slate-700 border shadow"
+        className="w-32 h-32 object-cover border-slate-700 border "
+        width={512}
+        alt="img"
+        height={512}
       />
-      <div className="space-y-2">
-        <h1 className="text-white font-semibold">
+      <div>
+        <h3 className="text-xs uppercase text-yellow-500 font-bold">
+          Nightfall this week
+        </h3>
+        <h1 className="text-white font-semibold text-xl inline-flex items-center gap-2">
           {hashed.displayProperties.description}
         </h1>
-        <div className="flex sm:flex-row flex-col gap-4 items-start flex-wrap">
+
+        <div className="flex sm:flex-row flex-col gap-4 items-start flex-wrap mt-2">
           <div className="space-y-2">
-            <p className="text-slate-300 font-medium text-sm">Shields</p>
+            <p className="text-slate-300 text-sm">Shields</p>
             {shields?.map((shield) => (
               <div className="flex items-center gap-1" key={shield}>
                 <img
@@ -98,7 +106,7 @@ export async function WeeklyNightfall() {
           </div>
 
           <div className="space-y-2">
-            <p className="text-slate-300 text-sm font-medium">Champions</p>
+            <p className="text-slate-300 text-sm ">Champions</p>
             {champions.map((champion) => (
               <div className="flex items-center gap-1" key={champion}>
                 <img
@@ -113,15 +121,6 @@ export async function WeeklyNightfall() {
               </div>
             ))}
           </div>
-          <div className="space-y-2">
-            <p className="text-slate-300 font-medium text-sm">Rewards</p>
-            {rewards.map((reward) => (
-              <HoverItem {...reward.displayProperties} key={reward.hash} />
-            ))}
-          </div>
-          {/* {activity.modifierHashes.map((hash) => (
-            <Modifier hash={hash} key={hash} />
-          ))} */}
         </div>
       </div>
     </div>

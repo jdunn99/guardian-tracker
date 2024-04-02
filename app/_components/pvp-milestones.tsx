@@ -48,6 +48,12 @@ export async function WeeklyPVPMilestones() {
             <span className="text-red-500 text-xs font-bold">Inactive</span>
           )}
         </div>
+
+        {typeof trials.activities !== "undefined" ? (
+          <div className="flex gap-2 items-center">
+            {DestinyActivityDefinition[trials.activities[0].activityHash].hash}
+          </div>
+        ) : null}
       </div>
 
       <div className="space-y-2">
@@ -67,7 +73,7 @@ export async function WeeklyPVPMilestones() {
           <h1 className="text-white text-sm font-semibold">
             Weekly Crucible Activity
           </h1>
-          <div className="flex  gap-2 items-center">
+          <div className="flex gap-2 items-center">
             <HoverItem
               {...DestinyActivityDefinition[
                 weeklyPvpChallenge.activities[0].activityHash

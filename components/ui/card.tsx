@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import React from "react";
 
@@ -8,7 +6,7 @@ interface CardProps {
 }
 export function Card({ children }: CardProps) {
   return (
-    <div className="group relative w-full p-4 overflow-hidden border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors ">
+    <div className="group relative w-full p-4  border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors ">
       {children}
     </div>
   );
@@ -18,14 +16,8 @@ interface ImageCardProps extends CardProps {
   image: string;
 }
 export function ImageCard({ children, image }: ImageCardProps) {
-  const [hovered, setHovered] = React.useState<boolean>(false);
-
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="group relative w-full overflow-hidden hover:border-yellow-500/30 border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-900 to-transparent hover:to-yellow-500/70 transition-colors "
-    >
+    <div className="cursor-pointer group relative w-full overflow-hidden hover:border-yellow-500/30 border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-900 to-transparent hover:to-yellow-500/70 transition-colors ">
       <div className={cn("relative min-h-[300px] p-4 h-full", image)}>
         {/* <div
           className={cn(

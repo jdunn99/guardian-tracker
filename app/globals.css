@@ -107,3 +107,12 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.radial-gradient {
+  background-image: radial-gradient(
+    ellipse 100% 100% at center,
+    rgba(234, 179, 8, 0.1),
+    rgba(37, 99, 235, 0) 50%
+  );
+  z-index: 0;
+}

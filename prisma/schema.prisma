@@ -1,0 +1,36 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model DestinyActivity {
+  id           BigInt              @id
+  activityType DestinyActivityType
+  name         String
+  description  String
+  image        String
+  exotic       BigInt?
+}
+
+model InventoryItem {
+  id              BigInt @id
+  name            String
+  description     String
+  image           String
+  source          String
+  type            String
+  typeAndTier     String
+  collectibleHash BigInt
+  damageType      Int
+}
+
+enum DestinyActivityType {
+  RAID
+  DUNGEON
+  NIGHTFALL
+  EXOTIC_MISSION
+}

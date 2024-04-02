@@ -43,7 +43,7 @@ export function Countdown({ end }: CountdownProps) {
 
         return (
           <span key={interval} className="text-white">
-            {value} <span className="text-base text-slate-400">{interval}</span>{" "}
+            {value} <span className=" text-slate-400">{interval}</span>{" "}
           </span>
         );
       })}

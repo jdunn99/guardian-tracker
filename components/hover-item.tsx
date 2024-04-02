@@ -25,7 +25,7 @@ export function HoverItem(
         <p className="text-xs">{displayProperties.name}</p>
       </div>
       {hovered && displayProperties.description !== "" ? (
-        <div className="absolute text-xs w-72  top-6  text-slate-300 z-50 rounded p-2 bg-slate-900 border border-slate-700 shadow">
+        <div className="absolute text-xs w-72  top-6  text-slate-300 z-[100] rounded p-2 bg-slate-900 border border-slate-700 shadow">
           {displayProperties.description}
         </div>
       ) : null}
