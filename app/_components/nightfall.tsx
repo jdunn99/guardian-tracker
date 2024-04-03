@@ -1,36 +1,14 @@
-import { $http, getManifest, getManifest2 } from "@/lib/bungie";
+import { $http, DamageType, getManifest } from "@/lib/bungie";
 import {
   DestinyActivityRewardDefinition,
   DestinyInventoryItemDefinition,
   getPublicMilestones,
 } from "bungie-api-ts/destiny2";
-import { Modifier } from "./modifier";
-import { DamageIcons } from "./inventory-item";
-import inventoryManifest from "@/app/inventoryManifest.json";
-import { HoverItem } from "./hover-item";
 import Image from "next/image";
+import { ShieldIcon } from "@/components/icons/shields";
+import { ChampionIcon, ChampionType } from "../../components/icons/champions";
 
 const WEEKLY_NIGHTFALL_HASH = 2029743966;
-export const SHIELD_ICONS = {
-  Arc: DamageIcons[2],
-  Solar: DamageIcons[3],
-  Void: DamageIcons[4],
-};
-
-export const CHAMPION_ICONS = {
-  "Shield-Piercing": {
-    name: "Barrier",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/eb04e3267eee527d64d85af3f0a3ec6a.png",
-  },
-  Stagger: {
-    name: "Unstoppable",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9caeb47c43fbe011607af18409d8162f.png",
-  },
-  Disruption: {
-    name: "Overload",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/f089fa44124cb8fe585acc5794653098.png",
-  },
-};
 
 const REGEX = /(?<=\[).+?(?=\])/g;
 
@@ -38,7 +16,7 @@ async function parseModifiers(modiferHashes: number[]) {
   let shields: string[] = [];
   let champions: string[] = [];
 
-  const { DestinyActivityModifierDefinition } = await getManifest2([
+  const { DestinyActivityModifierDefinition } = await getManifest([
     "DestinyActivityModifierDefinition",
   ]);
 
@@ -60,7 +38,9 @@ async function parseModifiers(modiferHashes: number[]) {
 
 export async function WeeklyNightfall() {
   const milestones = await getPublicMilestones($http);
-  const { DestinyActivityDefinition } = await getManifest();
+  const { DestinyActivityDefinition } = await getManifest([
+    "DestinyActivityDefinition",
+  ]);
   const { Response: data } = milestones;
 
   if (!data) {
@@ -95,30 +75,14 @@ export async function WeeklyNightfall() {
           <div className="space-y-2">
             <p className="text-slate-300 text-sm">Shields</p>
             {shields?.map((shield) => (
-              <div className="flex items-center gap-1" key={shield}>
-                <img
-                  src={SHIELD_ICONS[shield as keyof typeof SHIELD_ICONS]}
-                  className="w-4 h-4"
-                />
-                <span className="text-xs text-slate-400">{shield}</span>
-              </div>
+              <ShieldIcon key={shield} type={shield as DamageType} />
             ))}
           </div>
 
           <div className="space-y-2">
             <p className="text-slate-300 text-sm ">Champions</p>
             {champions.map((champion) => (
-              <div className="flex items-center gap-1" key={champion}>
-                <img
-                  src={
-                    CHAMPION_ICONS[champion as keyof typeof CHAMPION_ICONS].icon
-                  }
-                  className="w-4 h-4"
-                />
-                <span className="text-xs text-slate-400">
-                  {CHAMPION_ICONS[champion as keyof typeof CHAMPION_ICONS].name}
-                </span>
-              </div>
+              <ChampionIcon key={champion} type={champion as ChampionType} />
             ))}
           </div>
         </div>

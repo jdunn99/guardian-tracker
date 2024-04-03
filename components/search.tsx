@@ -9,6 +9,7 @@ import React from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { ScrollAreaThumb } from "@radix-ui/react-scroll-area";
 import { Input } from "./ui/input";
+import Link from "next/link";
 
 interface SearchResultsProps {
   query: string;
@@ -47,10 +48,10 @@ function SearchResults({ query }: SearchResultsProps) {
           Results
         </p>
         {data.searchResults.map((result) => (
-          <div
+          <Link
             key={crypto.randomUUID()}
-            className="w-full cursor-pointer hover:bg-slate-900 px-4 py-2"
-            onClick={() => onClick(result)}
+            className="w-full block cursor-pointer hover:bg-slate-900 px-4 py-2"
+            href={`/${result.destinyMemberships[0].membershipType}/${result.destinyMemberships[0].membershipId}`}
           >
             <div
               key={crypto.randomUUID()}
@@ -67,7 +68,7 @@ function SearchResults({ query }: SearchResultsProps) {
                 )
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </ScrollArea>

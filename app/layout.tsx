@@ -61,7 +61,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* <Nav /> */}
-        {children}
+        <main className="min-h-screen  w-full bg-slate-900">{children}</main>
       </body>
     </html>
   );

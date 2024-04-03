@@ -9,6 +9,9 @@ import { HttpQueryParams } from "bungie-api-ts/http";
 import { FaPlaystation, FaSteam, FaXbox } from "react-icons/fa";
 import { SiStadia } from "react-icons/si";
 
+export type DamageType = "Arc" | "Solar" | "Void" | "Strand" | "Stasis";
+export type ArmorType = "Arms" | "Helmet" | "Chest" | "Legs";
+
 export const PlatformIcons = {
   1: <FaXbox key="Xbox" />,
   2: <FaPlaystation key="PS" />,
@@ -36,6 +39,7 @@ function parseParams(params: HttpQueryParams) {
 
 /**
  * Basic config from bungie-api-ts
+ * Used to make authorized HTTP requests with bungie-api-ts functions to the Bungie.net API endpoints
  */
 export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
   const { url, params, method, body } = config;
@@ -60,41 +64,11 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
 }
 
 /**
- * Since RSC's and NextJS fetch have caching built-in, we can just call this function
- * everytime we need the manifest and not worry about storing in a global store.
- * Maybe should just pass tableNames as an argument but that would mean we would
- * have cache differences and what not.
- *
- * ISSUE: The inventory manifest is too large to cache. So for now, I will manually fetch and save it to a JSON file.
+ * Calls the Bungie API to retrieve the JSON from the requested manifest.
+ * @param tableNames - The valid Bungie API manifest table names
+ * @returns - The requested table names
  */
-export async function getManifest() {
-  const manifestResponse = await getDestinyManifest($http);
-
-  if (typeof manifestResponse.Response === "undefined") {
-    throw new Error("Something went wrong fetching the manifest");
-  }
-
-  const manifest = await getDestinyManifestSlice($http, {
-    destinyManifest: manifestResponse.Response,
-    language: "en",
-    tableNames: [
-      "DestinyClassDefinition",
-      "DestinyRaceDefinition",
-      "DestinyInventoryBucketDefinition",
-      "DestinySandboxPerkDefinition",
-      "DestinySocketCategoryDefinition",
-      "DestinySandboxPerkDefinition",
-      "DestinyMilestoneDefinition",
-      "DestinyObjectiveDefinition",
-      "DestinyActivityDefinition",
-      "DestinyActivityModifierDefinition",
-    ],
-  });
-
-  return manifest;
-}
-
-export async function getManifest2<
+export async function getManifest<
   T extends (keyof AllDestinyManifestComponents)[]
 >(tableNames: T) {
   const manifest = await getDestinyManifest($http);
@@ -103,14 +77,9 @@ export async function getManifest2<
     throw new Error("Something went wrong fetching the manifest");
   }
 
-  console.log(tableNames);
-
   return await getDestinyManifestSlice($http, {
     destinyManifest: manifest.Response,
     language: "en",
     tableNames,
   });
 }
-
-// If I ever need to use Manifest in props, I can just call this type
-export type Manifest = Awaited<ReturnType<typeof getManifest>>;

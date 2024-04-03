@@ -1,4 +1,4 @@
-import { getManifest2 } from "@/lib/bungie";
+import { getManifest } from "@/lib/bungie";
 import { db } from "@/lib/db";
 import { DestinyActivityType } from "@prisma/client";
 
@@ -36,7 +36,7 @@ const Dungeons = [
 
 export async function Seed() {
   const { DestinyInventoryItemDefinition, DestinyCollectibleDefinition } =
-    await getManifest2([
+    await getManifest([
       "DestinyInventoryItemDefinition",
       "DestinyCollectibleDefinition",
     ]);
@@ -72,7 +72,7 @@ export async function Seed() {
 }
 
 // export async function Seed() {
-//   const manifest = await getManifest2([
+//   const manifest = await getManifest([
 //     "DestinyMilestoneDefinition",
 //     "DestinyActivityDefinition",
 //     "DestinyCollectibleDefinition",
@@ -151,7 +151,7 @@ export async function Seed() {
 
 // // Build a manifest of weapons, armor, exotic, etc.
 // export async function Seed() {
-//   const manifest = await getManifest2(["DestinyPresentationNodeDefinition"]);
+//   const manifest = await getManifest(["DestinyPresentationNodeDefinition"]);
 //   const { Response } = await getCommonSettings($http);
 
 //   // PresentationNode "Items"
