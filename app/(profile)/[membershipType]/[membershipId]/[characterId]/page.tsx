@@ -1,15 +1,10 @@
 import React from "react";
 import { getDestinyProfile } from "../page";
-import {
-  DestinyInventoryItemDefinition,
-  getDestinyEntityDefinition,
-} from "bungie-api-ts/destiny2";
-import { $http } from "@/lib/bungie";
-import Image from "next/image";
 import { CharacterHeader } from "./_components/header";
 import { Ranks } from "./_components/ranks";
-import { Nav } from "@/components/navigation/nav";
-import { CharacterLoadout } from "./_components/loadout";
+import { CharacterLoadout } from "./_components/loadout/loadout";
+import { Card } from "@/components/ui/card";
+import { WeeklyOverview } from "./_components/weekly-overview";
 
 interface Props {
   params: {
@@ -61,10 +56,17 @@ export default async function CharacterPage({ params }: Props) {
         </ul>
       </section>
       <section className="pt-8 container mx-auto w-full">
-        <CharacterLoadout
-          items={characterEquipment.data![characterId].items}
-          perks={itemComponents.perks.data!}
-        />
+        <div className="grid grid-cols-4 gap-4">
+          <CharacterLoadout
+            items={characterEquipment.data![characterId].items}
+            perks={itemComponents.perks.data!}
+          />
+          <div className="col-span-3">
+            <WeeklyOverview
+              milestones={characterProgressions.data![characterId].milestones}
+            />
+          </div>
+        </div>
       </section>
     </React.Fragment>
   );

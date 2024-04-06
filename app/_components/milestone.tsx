@@ -1,15 +1,20 @@
-import { CollectionItem } from "@/components/collection-item";
+import {
+  CollectionItem,
+  SmallInventoryItem,
+} from "@/components/collection-item";
 import { db } from "@/lib/db";
+import { cn } from "@/lib/utils";
 import {
   DestinyActivity,
   DestinyActivityType,
   InventoryItem,
 } from "@prisma/client";
+import { Check } from "lucide-react";
 import Image from "next/image";
 
-const HEADINGS: Record<DestinyActivityType, string> = {
-  DUNGEON: "Weekly Dungeon Challenge",
-  RAID: "Weekly Raid Challenge",
+export const ACTIVITY_HEADINGS: Record<DestinyActivityType, string> = {
+  DUNGEON: "Weekly Dungeon",
+  RAID: "Weekly Raid",
   EXOTIC_MISSION: "Weekly Exotic Mission",
   NIGHTFALL: "",
 };
@@ -47,31 +52,56 @@ async function getExoticReward(exotic: bigint | null) {
   return reward;
 }
 
-export async function Milestone(milestone: DestinyActivity) {
+interface MilestoneProps {
+  milestone: DestinyActivity;
+  variant?: "small" | "base";
+  children?: React.ReactNode;
+}
+
+export async function Milestone({
+  milestone,
+  variant = "base",
+  children,
+}: MilestoneProps) {
   const reward = await getExoticReward(milestone.exotic);
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-start gap-4">
-        <Image
-          src={`https://bungie.net${milestone.image}`}
-          width={512}
-          height={512}
-          className="w-32 h-32 object-cover border border-slate-700"
-          alt="img"
-        />
-        <div>
-          <h3 className="text-xs uppercase text-yellow-500 font-bold">
-            {HEADINGS[milestone.activityType]}
-          </h3>
-          <h1 className="text-xl font-semibold text-white">{milestone.name}</h1>
+    <div className="flex items-start gap-4 w-full ">
+      <Image
+        src={`https://bungie.net${milestone.image}`}
+        width={512}
+        height={512}
+        className={cn(
+          "object-cover, border border-slate-700",
+          variant === "base" ? "w-32 h-32" : "h-12 w-12"
+        )}
+        alt="img"
+      />
+      <div className="flex-1">
+        <h3 className="text-xs uppercase text-yellow-500 font-bold">
+          {ACTIVITY_HEADINGS[milestone.activityType]}
+        </h3>
+        <h1
+          className={cn(
+            "text-white font-semibold",
+            variant === "base" ? "text-xl" : "text-sm"
+          )}
+        >
+          {milestone.name}
+        </h1>
+        {variant === "base" ? (
           <p className="text-xs text-slate-400 pt-2">{milestone.description}</p>
-          <div className="space-y-2 pt-4">
-            <p className="text-sm text-slate-300">Rewards</p>
+        ) : null}
+        <div className="space-y-2 pt-4">
+          <p className="text-sm text-slate-300">Rewards</p>
+          {variant === "base" ? (
             <CollectionItem {...reward} />
-          </div>
+          ) : (
+            <SmallInventoryItem {...reward} />
+          )}
         </div>
       </div>
+      {children}
     </div>
   );
 }

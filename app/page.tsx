@@ -1,23 +1,17 @@
 import { Countdown } from "@/components/countdown";
 import { WeeklyNightfall } from "@/app/_components/nightfall";
 import { SearchBar } from "@/components/search";
-import { $http } from "@/lib/bungie";
-import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
 import { WeeklyMilestones } from "./_components/milestones";
 import { DailyLostSector } from "./_components/lost-sector";
-import { Card, ImageCard } from "@/components/ui/card";
+import { ImageCard } from "@/components/ui/card";
 import Image from "next/image";
 import { Footer } from "@/components/navigation/footer";
-import { Nav } from "@/components/navigation/nav";
 
-import { ProfileHeader } from "@/components/profile-header";
 import React from "react";
 
 export default async function Home() {
   return (
     <React.Fragment>
-      {/* <Nav /> */}
-
       <header className="w-full sm:pt-64 py-16 pb-48 relative px-4">
         <div className="absolute inset-0 hero-gradient mx-auto max-w-[100vw] " />
         <div className="w-full mx-auto max-w-screen-md z-50 space-y-4 relative">

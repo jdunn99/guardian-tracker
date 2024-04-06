@@ -36,40 +36,39 @@ function SearchResults({ query }: SearchResultsProps) {
     fetchData();
   }, [query]);
 
-  function onClick(result: UserSearchResponseDetail) {
-    const { destinyMemberships } = result;
-    console.log(result);
-  }
-
   return typeof data !== "undefined" && query !== "" ? (
     <ScrollArea className="!absolute bg-slate-800 text-secondary border-slate-700 border z-50 top-11 w-full rounded-lg shadow  break-words">
       <div className="w-full space-y-1 max-h-[128px]">
         <p className="text-xs px-4 pt-2 text-yellow-500 font-semibold">
           Results
         </p>
-        {data.searchResults.map((result) => (
-          <Link
-            key={crypto.randomUUID()}
-            className="w-full block cursor-pointer hover:bg-slate-900 px-4 py-2"
-            href={`/${result.destinyMemberships[0].membershipType}/${result.destinyMemberships[0].membershipId}`}
-          >
-            <div
+        {data.searchResults.map((result) =>
+          result.destinyMemberships[0] ? (
+            <Link
               key={crypto.randomUUID()}
-              className="flex items-center gap-2 text-sm"
+              className="w-full block cursor-pointer hover:bg-slate-900 px-4 py-2"
+              href={`/${result.destinyMemberships[0].membershipType}/${result.destinyMemberships[0].membershipId}`}
             >
-              <p>{result.bungieGlobalDisplayName}</p>
-              <p className="text-xs text-yellow-500 bg-slate-900 py-0.5 rounded font-semibold px-1">
-                # {result.bungieGlobalDisplayNameCode}
-              </p>
-              {result.destinyMemberships.map((membership) =>
-                membership.applicableMembershipTypes.map(
-                  (membershipType) =>
-                    PlatformIcons[membershipType as keyof typeof PlatformIcons]
-                )
-              )}
-            </div>
-          </Link>
-        ))}
+              <div
+                key={crypto.randomUUID()}
+                className="flex items-center gap-2 text-sm"
+              >
+                <p>{result.bungieGlobalDisplayName}</p>
+                <p className="text-xs text-yellow-500 bg-slate-900 py-0.5 rounded font-semibold px-1">
+                  # {result.bungieGlobalDisplayNameCode}
+                </p>
+                {result.destinyMemberships.map((membership) =>
+                  membership.applicableMembershipTypes.map(
+                    (membershipType) =>
+                      PlatformIcons[
+                        membershipType as keyof typeof PlatformIcons
+                      ]
+                  )
+                )}
+              </div>
+            </Link>
+          ) : null
+        )}
       </div>
     </ScrollArea>
   ) : null;
