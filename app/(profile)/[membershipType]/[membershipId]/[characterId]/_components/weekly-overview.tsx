@@ -26,9 +26,9 @@ export async function WeeklyOverview({
   return (
     <div className="space-y-2">
       <h3 className=" text-slate-100 font-semibold ">Weekly Overview</h3>
-      <ul className="grid w-full grid-cols-3 gap-2">
+      <ul className="flex gap-2">
         {activities.map((activity) => (
-          <li key={activity.id}>
+          <li key={activity.id} className="h-full flex-1">
             <Card>
               <h5 className="text-xs uppercase text-yellow-500 font-bold"></h5>
               <Milestone milestone={activity} variant="small">

@@ -47,13 +47,13 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
     url + (typeof params !== "undefined" ? parseParams(params!) : "");
 
   // fill in the API key, handle OAuth, etc., then make an HTTP request using the config.
+  console.log(process.env.NEXT_PUBLIC_API_KEY!);
   const result = await fetch(parsedUrl, {
     headers: {
       "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY!,
       "Content-type": "application/json",
-      accept: "application/json",
+      Accept: "application/json",
     },
-    cache: "no-cache",
     method,
     body: JSON.stringify(body),
   });
@@ -69,7 +69,7 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
  * @returns - The requested table names
  */
 export async function getManifest<
-  T extends (keyof AllDestinyManifestComponents)[]
+  T extends (keyof AllDestinyManifestComponents)[],
 >(tableNames: T) {
   const manifest = await getDestinyManifest($http);
 

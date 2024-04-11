@@ -1,11 +1,10 @@
 import { $http } from "@/lib/bungie";
-import { DestinyComponentType, getProfile } from "bungie-api-ts/destiny2";
+import { getProfile } from "bungie-api-ts/destiny2";
 import React from "react";
 import { Profile } from "./_components/profile";
 import { getGroupsForMember } from "bungie-api-ts/groupv2";
 import { Clan } from "./_components/clan";
 import { Characters } from "./_components/characters";
-import { Nav } from "@/components/navigation/nav";
 
 interface Props {
   params: {
@@ -23,13 +22,11 @@ export async function getDestinyProfile(
   const { Response: data, ErrorStatus } = await getProfile($http, {
     destinyMembershipId: membershipId,
     components: [
-      100, 104, 200, 202, 204, 205, 300, 301, 302, 303, 304, 305, 306, 307, 308,
-      310, 900, 1100, 1200,
+      100, 104, 200, 202, 204, 205, 300, 301, 302, 303, 304, 305, 307, 308, 310,
+      700, 900, 1100, 1400,
     ],
     membershipType,
   });
-
-  console.log(data, ErrorStatus);
 
   if (!data) {
     throw new Error("Something went wrong fetching the User's profile");

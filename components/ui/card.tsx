@@ -1,14 +1,25 @@
+"use client";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { ScrollArea } from "./scroll-area";
 
-interface CardProps {
-  children: React.ReactNode;
-}
-export function Card({ children }: CardProps) {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+export function Card({ children, ...rest }: CardProps) {
   return (
-    <div className="group relative w-full p-4  border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors ">
+    <div
+      {...rest}
+      className="group break-words relative w-full p-4  border-slate-700/65 rounded-lg border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors "
+    >
       {children}
     </div>
+  );
+}
+
+export function ScrollCard({ children }: CardProps) {
+  return (
+    <ScrollArea className="group relative w-full p-4  border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors h-[45vh]">
+      {children}
+    </ScrollArea>
   );
 }
 

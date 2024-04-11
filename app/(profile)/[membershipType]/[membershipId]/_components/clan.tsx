@@ -1,5 +1,6 @@
 "use client";
 import { GroupV2 } from "bungie-api-ts/groupv2";
+import { BsPersonFill } from "react-icons/bs";
 
 export function Clan(group: GroupV2) {
   return (
@@ -14,8 +15,8 @@ export function Clan(group: GroupV2) {
           className="opacity-80"
         /> */}
         <h3 className="text-slate-200">{group.name}</h3>
-        <p className="text-slate-400 text-xs font-semibold">
-          {/* <span>M</span> */}
+        <p className="text-slate-400 text-xs font-semibold inline-flex items-center gap-1">
+          <BsPersonFill />
           {group.memberCount}
         </p>
       </div>

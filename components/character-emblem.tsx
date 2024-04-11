@@ -37,7 +37,7 @@ function CharacterEmblem({ manifest, ...character }: CharacterEmblemProps) {
             </p>
           </div>
           <h1 className="text-xl text-yellow-300 font-bold">
-            {character.light}
+            &E052; {character.light}
           </h1>
         </div>
       </div>

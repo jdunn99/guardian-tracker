@@ -1,4 +1,5 @@
-import { getManifest } from "@/lib/bungie";
+"use client";
+import { useManifest } from "@/lib/manifest/useManifest";
 import {
   DestinyCharacterComponent,
   DestinyCharacterProgressionComponent,
@@ -30,9 +31,13 @@ function parseProgression(progression: Record<number, DestinyProgression>) {
   return result;
 }
 
-export async function Ranks(character: DestinyCharacterProgressionComponent) {
-  const manifest = await getManifest(["DestinyProgressionDefinition"]);
+export function Ranks(character: DestinyCharacterProgressionComponent) {
+  const manifest = useManifest();
   const ranks = parseProgression(character.progressions);
+
+  if (!manifest) {
+    return null;
+  }
 
   return (
     <div className="flex items-start gap-6">
@@ -57,13 +62,17 @@ export async function Ranks(character: DestinyCharacterProgressionComponent) {
               alt={rank.progressionHash.toString()}
             />
             <div className="flex items-center text-xs  text-slate-100">
-              <Image
-                src={`https://bungie.net${progression.steps[rank.level].icon}`}
-                alt={rank.level.toString()}
-                className="w-4 h-4"
-                width={24}
-                height={24}
-              />
+              {progression.steps[rank.level] ? (
+                <Image
+                  src={`https://bungie.net${
+                    progression.steps[rank.level].icon
+                  }`}
+                  alt={rank.level.toString()}
+                  className="w-4 h-4"
+                  width={24}
+                  height={24}
+                />
+              ) : null}
               {rank.currentProgress}
             </div>
           </div>

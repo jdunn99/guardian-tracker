@@ -5,6 +5,8 @@ import {
   DestinyRace,
 } from "bungie-api-ts/destiny2";
 import Link from "next/link";
+import { FaDiamond } from "react-icons/fa6";
+
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -36,9 +38,10 @@ function CharacterEmblem(character: DestinyCharacterComponent) {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="absolute right-4 top-2 text-yellow-400 text-2xl font-bold">
+        <span className="absolute right-4 top-2 text-yellow-400 text-2xl font-bold inline-flex items-center">
+          <FaDiamond className="text-xs" />
           {character.light}
-        </div>
+        </span>
         <div className="pt-2 pl-20 space-y-1">
           <h1 className="text-xl text-white font-semibold">
             {CLASS_TYPES[character.classType]}

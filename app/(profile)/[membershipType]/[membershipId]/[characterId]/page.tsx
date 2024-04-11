@@ -4,7 +4,8 @@ import { CharacterHeader } from "./_components/header";
 import { Ranks } from "./_components/ranks";
 import { CharacterLoadout } from "./_components/loadout/loadout";
 import { Card } from "@/components/ui/card";
-import { WeeklyOverview } from "./_components/weekly-overview";
+import { SeasonProgression } from "./_components/season";
+import { TriumphTitles } from "./_components/triumphs/titles";
 
 interface Props {
   params: {
@@ -24,47 +25,90 @@ export default async function CharacterPage({ params }: Props) {
     characterProgressions,
     characterEquipment,
     itemComponents,
+    profileCommendations,
+    profileRecords,
+    characterPresentationNodes,
   } = data;
 
-  if (!profile.data) {
-    throw new Error("Error fetching the characters");
-  }
+  const character = characters.data![characterId];
+  const progressions = characterProgressions.data![characterId].progressions;
+  const currentSeason = profile.data!.currentSeasonHash;
 
-  if (!characters.data) {
-    throw new Error("Error fetching the characters");
+  if (!currentSeason) {
+    throw new Error("Something went wrong fetching the seasonal data");
   }
-
-  const character = characters.data[characterId];
 
   return (
     <React.Fragment>
-      <section className="container flex items-start pt-24 w-full mx-auto justify-between">
-        <CharacterHeader character={character} profile={profile.data} />
-        <div className="flex-col items-end justify-end flex gap-1">
-          <span className="text-xs uppercase text-yellow-500 font-bold ">
-            Ranks
-          </span>
-          <Ranks {...characterProgressions.data![characterId]} />
-        </div>
-      </section>
-      <section className="pt-8 container mx-auto w-full">
-        <ul className="flex items-center gap-8 text-slate-300 font-medium">
-          <li>Overview</li>
-          <li>Checklist</li>
-          <li>Activities</li>
-          <li>Builds</li>
-        </ul>
-      </section>
-      <section className="pt-8 container mx-auto w-full">
-        <div className="grid grid-cols-4 gap-4">
-          <CharacterLoadout
-            items={characterEquipment.data![characterId].items}
-            perks={itemComponents.perks.data!}
-          />
-          <div className="col-span-3">
-            <WeeklyOverview
-              milestones={characterProgressions.data![characterId].milestones}
+      <CharacterHeader
+        character={character}
+        profile={profile.data!}
+        records={profileRecords.data!.records}
+        titleRecordHash={character.titleRecordHash}
+        profileCommendations={profileCommendations.data!}
+      />
+      <section className="max-w-screen-xl w-full mx-auto pt-12">
+        <div className="grid grid-cols-8 gap-2">
+          <div className="col-span-3 space-y-2">
+            <SeasonProgression
+              seasonHash={currentSeason}
+              progressions={progressions}
             />
+            <Card>
+              <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                Subclass
+              </h5>
+              <CharacterLoadout
+                items={characterEquipment.data![characterId].items}
+                perks={itemComponents.perks.data!}
+                membershipId={membershipId}
+                membershipType={parseInt(membershipType)}
+              />
+            </Card>
+          </div>
+          <div className="space-y-2 col-span-5">
+            <div className="grid grid-cols-2 gap-2">
+              <Card>
+                <div className="flex w-full justify-center h-full items-center">
+                  <Ranks {...characterProgressions.data![characterId]} />
+                </div>
+              </Card>
+              <TriumphTitles
+                characterPresentationNodes={
+                  characterPresentationNodes.data![characterId].nodes
+                }
+              />
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <Card>
+                <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                  Raid
+                </h5>
+              </Card>
+
+              <Card>
+                <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                  Nightfall
+                </h5>
+              </Card>
+              <Card>
+                <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                  Dungeon
+                </h5>
+              </Card>
+            </div>
+
+            <Card>
+              <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                Metrics
+              </h5>
+            </Card>
+
+            <Card>
+              <h5 className="text-xs uppercase text-yellow-500 font-bold">
+                Recent Activity
+              </h5>
+            </Card>
           </div>
         </div>
       </section>
