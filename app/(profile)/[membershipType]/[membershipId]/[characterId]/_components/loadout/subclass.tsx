@@ -1,27 +1,43 @@
 "use client";
-import { $http } from "@/lib/bungie";
+import { Card } from "@/components/ui/card";
 import { useManifest } from "@/lib/manifest/useManifest";
 import {
   DestinyInventoryItemDefinition,
   DestinyItemSocketState,
-  getItem,
 } from "bungie-api-ts/destiny2";
-import { headers } from "next/headers";
 import Image from "next/image";
 import React from "react";
+import useSWR from "swr";
+import { getItemFromInstanceId, parseItems } from "../../actions";
+import { DestinyItem } from "@/components/destiny/destiny-item";
+import { SubclassContainer } from "./subclass/subclass-container";
 
-interface CharacterSubclassProps {
-  subclassHash: number;
-  sockets: DestinyItemSocketState[];
+interface SubclassProps {
+  subclass: ReturnType<typeof parseItems>["subclass"];
+  membershipType: number;
+  membershipId: string;
+  light: number;
+  stats: Record<number, number>;
 }
 
-export function Subclass({ subclassHash, sockets }: CharacterSubclassProps) {
+export function Subclass({
+  subclass,
+  membershipType,
+  membershipId,
+  light,
+  stats,
+}: SubclassProps) {
   const manifest = useManifest();
+  const { data } = useSWR(subclass?.itemInstanceId, () =>
+    getItemFromInstanceId(membershipId, membershipType, subclass.itemInstanceId)
+  );
 
   const parsedSockets = React.useMemo(() => {
-    if (!manifest) {
+    if (!manifest || !data) {
       return null;
     }
+
+    const sockets = data.sockets.data!.sockets;
 
     let superAbility = {} as DestinyInventoryItemDefinition;
     const abilities: DestinyInventoryItemDefinition[] = [];
@@ -40,7 +56,7 @@ export function Subclass({ subclassHash, sockets }: CharacterSubclassProps) {
         superAbility = item;
       } else if (type.includes("Aspect")) {
         aspects.push(item);
-      } else if (type.includes("Fragment")) {
+      } else if (type.includes("Fragment") || type === "") {
         fragments.push(item);
       } else {
         abilities.push(item);
@@ -48,123 +64,82 @@ export function Subclass({ subclassHash, sockets }: CharacterSubclassProps) {
     }
 
     return { superAbility, aspects, fragments, abilities };
-  }, [manifest, sockets]);
+  }, [data, manifest]);
 
   // TODO: Skeleton
   if (!parsedSockets || !manifest) {
     return null;
   }
 
-  const subclass = manifest.DestinyInventoryItemDefinition[subclassHash];
-  const colors = subclass.backgroundColor;
+  const destinySubclass =
+    manifest.DestinyInventoryItemDefinition[subclass.itemHash];
+  const colors = destinySubclass.backgroundColor;
+  const color = `rgba(${colors.red},${colors.green},${colors.blue}, 0.6)`;
 
   const { superAbility, aspects, fragments, abilities } = parsedSockets;
-  console.log(abilities);
 
   return (
-    <div className="space-y-6 ">
-      {/* <div className="flex items-center gap-2 font-bold">
-        <Image
-          src={`https://bungie.net${subclass.displayProperties.icon}`}
-          width={48}
-          height={48}
-          alt="subclass"
-        />
-        <div className="uppercase">
-          <h1 className="text-xl text-white font-bold">
-            {subclass.displayProperties.name}
-          </h1>
-          <h1 className="text-xs font-light text-slate-300">
-            {subclass.itemTypeDisplayName}
-          </h1>
-        </div>
-      </div> */}
-      <Image
-        src={`https://bungie.net${superAbility.displayProperties.icon}`}
-        width={72}
-        height={72}
-        alt="subclass"
-      />
-      <div className="flex items-start gap-4">
-        <div className="grid gap-4">
-          <div className="flex items-start gap-8 justify-between text-xs font-semibold uppercase text-slate-400">
-            <div className="space-y-1">
-              <h1 className="border-b border-slate-400">Abilities</h1>
-              <div className="flex items-center gap-1">
-                {abilities.map((ability) => (
-                  <Image
-                    src={`https://bungie.net${ability.displayProperties.icon}`}
-                    width={48}
-                    height={48}
-                    className="border-slate-700/50 border"
-                    alt="icon"
-                    key={ability.hash}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="space-y-1">
-              <h1 className="border-b border-slate-400">Aspects</h1>
-              <div className="flex items-center gap-1">
-                {aspects.map((ability) => (
-                  <Image
-                    src={`https://bungie.net${ability.displayProperties.icon}`}
-                    width={48}
-                    height={48}
-                    className="border-slate-700/50 border"
-                    alt="icon"
-                    key={ability.hash}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <h1 className="border-b border-slate-400 text-slate-400 uppercase text-xs font-bold">
-              Fragments
-            </h1>
-            <div className="flex items-center gap-1 w-full bg-slate-900/50">
-              {fragments.map((ability) => (
-                <Image
-                  src={`https://bungie.net${ability.displayProperties.icon}`}
-                  width={48}
-                  height={48}
-                  className="border-slate-700/50 border"
-                  alt="icon"
-                  key={ability.hash}
-                />
-              ))}
+    <Card>
+      <h5 className="text-xs uppercase text-yellow-500 font-bold">Subclass</h5>
+      <div className="space-y-6 ">
+        <div className="flex items-center gap-4">
+          <Image
+            src={`https://bungie.net${superAbility.displayProperties.icon}`}
+            width={72}
+            height={72}
+            alt="subclass"
+          />
+          <div>
+            <h5 className="text-[8px] uppercase text-yellow-500 font-bold">
+              Power
+            </h5>
+            <h1 className="text-yellow-300 font-bold text-3xl">{light}</h1>
+            <div className="flex items-center gap-2 pt-2">
+              {Object.keys(stats).map((stat) =>
+                stat !== "1935470627" ? ( // Skip the power stat
+                  <span
+                    className="inline-flex gap-1 items-center text-xs text-white"
+                    key={stat}
+                  >
+                    <Image
+                      src={`https://bungie.net${
+                        manifest.DestinyStatDefinition[parseInt(stat)]
+                          .displayProperties.icon
+                      }`}
+                      width={12}
+                      height={12}
+                      alt="stat"
+                    />
+                    {stats[parseInt(stat)]}
+                  </span>
+                ) : null
+              )}
             </div>
           </div>
         </div>
-
-        {/* <div className="grid w-full gap-4 text-xs font-semibold uppercase text-slate-400">
-          <div className="w-full flex items-center gap-4">
-            <div className="full">
-              <h1 className="border-b border-slate-700">Abilities</h1>
-              <div className={`flex gap-2`}>
-                {abilities.map((ability) => (
-                  <Image
-                    src={`https://bungie.net${ability.displayProperties.icon}`}
-                    width={32}
-                    height={32}
-                    alt="icon"
-                    key={ability.hash}
-                  />
-                ))}
-              </div>
+        <div className="flex items-start gap-4">
+          <div className="grid gap-4">
+            <div className="flex items-start gap-8 justify-between text-slate-400">
+              <SubclassContainer
+                heading="abilities"
+                abilities={abilities}
+                color={color}
+              />
+              <SubclassContainer
+                heading="aspects"
+                abilities={aspects}
+                color={color}
+              />
             </div>
-            <div className="w-full">
-              <h1 className="w-full  border-b border-slate-700">Aspects</h1>
-            </div>
-          </div>
 
-          <div className="w-full col-span-2">
-            <h1 className="w-full border-b border-slate-700">Fragments</h1>
+            <SubclassContainer
+              heading="Fragments"
+              abilities={fragments}
+              color={color}
+            />
           </div>
-        </div> */}
+        </div>
       </div>
-    </div>
+    </Card>
   );
 }

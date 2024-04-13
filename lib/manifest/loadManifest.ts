@@ -29,6 +29,7 @@ export const MANIFEST_TABLE_NAMES: Slice[] = [
   "DestinySeasonPassDefinition",
   "DestinyProgressionDefinition",
   "DestinyPresentationNodeDefinition",
+  "DestinyStatDefinition",
 ];
 export type Slice = keyof AllDestinyManifestComponents;
 const key = "destiny-manifest";

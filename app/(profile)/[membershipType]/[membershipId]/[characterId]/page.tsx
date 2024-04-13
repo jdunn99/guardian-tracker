@@ -3,9 +3,12 @@ import { getDestinyProfile } from "../page";
 import { CharacterHeader } from "./_components/header";
 import { Ranks } from "./_components/ranks";
 import { CharacterLoadout } from "./_components/loadout/loadout";
-import { Card } from "@/components/ui/card";
+import { Card, ImageCard } from "@/components/ui/card";
 import { SeasonProgression } from "./_components/season";
 import { TriumphTitles } from "./_components/triumphs/titles";
+import { parseItems } from "./actions";
+import { Subclass } from "./_components/loadout/subclass";
+import { Weapons } from "./_components/loadout/weapons";
 
 interface Props {
   params: {
@@ -38,6 +41,12 @@ export default async function CharacterPage({ params }: Props) {
     throw new Error("Something went wrong fetching the seasonal data");
   }
 
+  const { subclass, weapons, armor } = parseItems(
+    characterEquipment.data![characterId].items
+  );
+
+  console.log(subclass);
+
   return (
     <React.Fragment>
       <CharacterHeader
@@ -47,24 +56,30 @@ export default async function CharacterPage({ params }: Props) {
         titleRecordHash={character.titleRecordHash}
         profileCommendations={profileCommendations.data!}
       />
-      <section className="max-w-screen-xl w-full mx-auto pt-12">
-        <div className="grid grid-cols-8 gap-2">
-          <div className="col-span-3 space-y-2">
+      <section className="max-w-screen-xl w-full mx-auto py-12">
+        <div className="grid grid-cols-7 gap-2">
+          <div className="col-span-2 space-y-2 shrink-0">
             <SeasonProgression
               seasonHash={currentSeason}
               progressions={progressions}
             />
-            <Card>
-              <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                Subclass
-              </h5>
-              <CharacterLoadout
-                items={characterEquipment.data![characterId].items}
-                perks={itemComponents.perks.data!}
-                membershipId={membershipId}
-                membershipType={parseInt(membershipType)}
-              />
-            </Card>
+            <Subclass
+              light={character.light}
+              membershipId={membershipId}
+              membershipType={parseInt(membershipType)}
+              stats={character.stats}
+              subclass={subclass}
+            />
+            <Weapons
+              membershipId={membershipId}
+              membershipType={parseInt(membershipType)}
+              weapons={weapons}
+            />
+            <Weapons
+              membershipId={membershipId}
+              membershipType={parseInt(membershipType)}
+              weapons={armor}
+            />
           </div>
           <div className="space-y-2 col-span-5">
             <div className="grid grid-cols-2 gap-2">
@@ -82,8 +97,9 @@ export default async function CharacterPage({ params }: Props) {
             <div className="grid grid-cols-3 gap-2">
               <Card>
                 <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                  Raid
+                  Dungeon
                 </h5>
+                <h3 className="text-white font-bold text-xl">Duality</h3>
               </Card>
 
               <Card>
