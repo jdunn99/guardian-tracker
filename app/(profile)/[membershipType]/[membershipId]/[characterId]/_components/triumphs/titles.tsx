@@ -5,8 +5,10 @@ interface TriumphTitleProps {
 }
 
 import { Card } from "@/components/ui/card";
+import { HoverCard } from "@/components/ui/hover-card";
 import { getCommonSettings } from "@/lib/manifest/actions";
 import { useManifest } from "@/lib/manifest/useManifest";
+import { HoverCardContent, HoverCardTrigger } from "@radix-ui/react-hover-card";
 import {
   DestinyPresentationNodeComponent,
   DestinyPresentationNodeDefinition,
@@ -67,13 +69,25 @@ export function TriumphTitles({
       <div className="grid grid-cols-6 gap-1 mt-2">
         {characterTitles.map((title) =>
           title !== null ? (
-            <Image
-              src={`https://bungie.net${title.displayProperties.icon}`}
-              width={48}
-              height={48}
-              alt={title.displayProperties.name}
-              key={title.hash}
-            />
+            <HoverCard key={title.hash}>
+              <HoverCardTrigger>
+                <Image
+                  src={`https://bungie.net${title.displayProperties.icon}`}
+                  width={48}
+                  height={48}
+                  alt={title.displayProperties.name}
+                  key={title.hash}
+                />
+              </HoverCardTrigger>
+              <HoverCardContent className="bg-slate-800 p-4 z-50">
+                <p className="text-sm text-white">
+                  {title.displayProperties.name}
+                </p>
+                <span className="text-slate-400 text-xs italic">
+                  {title.displayProperties.description}
+                </span>
+              </HoverCardContent>
+            </HoverCard>
           ) : (
             <Image
               src="https://www.bungie.net/7/ca/destiny/icons/profile/noseal.png"

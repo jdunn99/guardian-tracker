@@ -4,6 +4,7 @@ import {
   getActivityHistory,
 } from "bungie-api-ts/destiny2";
 import { ActivitiesTable } from "./table";
+import { Card } from "@/components/ui/card";
 
 /**
  * Gets the recent activities for a character and parses the Response
@@ -19,17 +20,12 @@ export async function getRecentActivities(params: GetActivityHistoryParams) {
 }
 
 export async function ActivityHistory(params: GetActivityHistoryParams) {
-  const { DestinyActivityDefinition, DestinyActivityModeDefinition } =
-    await getManifest([
-      "DestinyActivityDefinition",
-      "DestinyActivityModeDefinition",
-    ]);
-
   return (
-    <ActivitiesTable
-      activityManifest={DestinyActivityDefinition}
-      activityModeManifest={DestinyActivityModeDefinition}
-      {...params}
-    />
+    <Card>
+      <h5 className="text-xs uppercase text-yellow-500 font-bold">
+        Recent Activity
+      </h5>
+      <ActivitiesTable {...params} />
+    </Card>
   );
 }

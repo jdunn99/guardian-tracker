@@ -94,7 +94,7 @@ export function Subclass({
               Power
             </h5>
             <h1 className="text-yellow-300 font-bold text-3xl">{light}</h1>
-            <div className="flex items-center gap-2 pt-2">
+            <div className="flex items-center gap-2 pt-2 flex-wrap">
               {Object.keys(stats).map((stat) =>
                 stat !== "1935470627" ? ( // Skip the power stat
                   <span
@@ -119,7 +119,7 @@ export function Subclass({
         </div>
         <div className="flex items-start gap-4">
           <div className="grid gap-4">
-            <div className="flex items-start gap-8 justify-between text-slate-400">
+            <div className="flex items-start gap-8 justify-between text-slate-400 flex-wrap">
               <SubclassContainer
                 heading="abilities"
                 abilities={abilities}

@@ -43,7 +43,7 @@ export function TooltipImage({ src }: { src: string }) {
 
 export function TooltipBody({ children, className, ...rest }: TooltipProps) {
   return (
-    <div className={cn("p-2 text-white", className)} {...rest}>
+    <div className={cn("px-2 pt-2 text-white", className)} {...rest}>
       {children}
     </div>
   );
@@ -53,7 +53,8 @@ export function DestinyTooltip({ children }: TooltipProps) {
   return (
     <HoverCardContent
       className="bg-slate-900/60 rounded-none border-0 p-0 backdrop-blur w-96"
-      dir="left"
+      side="right"
+      align="start"
     >
       {children}
     </HoverCardContent>

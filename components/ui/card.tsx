@@ -16,11 +16,7 @@ export function Card({ children, ...rest }: CardProps) {
 }
 
 export function ScrollCard({ children }: CardProps) {
-  return (
-    <ScrollArea className="group relative w-full p-4  border-slate-700/65 rounded-xl border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors h-[45vh]">
-      {children}
-    </ScrollArea>
-  );
+  return <ScrollArea className="h-[75vh]">{children}</ScrollArea>;
 }
 
 interface ImageCardProps extends CardProps {

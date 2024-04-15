@@ -20,6 +20,7 @@ export const MANIFEST_TABLE_NAMES: Slice[] = [
   "DestinyRecordDefinition",
   "DestinyActivityModifierDefinition",
   "DestinyActivityModeDefinition",
+  "DestinyCollectibleDefinition",
   "DestinyClassDefinition",
   "DestinyRaceDefinition",
   "DestinyDamageTypeDefinition",
@@ -28,6 +29,7 @@ export const MANIFEST_TABLE_NAMES: Slice[] = [
   "DestinyGuardianRankDefinition",
   "DestinySeasonPassDefinition",
   "DestinyProgressionDefinition",
+  "DestinyActivityTypeDefinition",
   "DestinyPresentationNodeDefinition",
   "DestinyStatDefinition",
 ];

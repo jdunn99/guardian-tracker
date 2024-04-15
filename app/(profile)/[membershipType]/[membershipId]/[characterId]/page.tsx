@@ -9,6 +9,9 @@ import { TriumphTitles } from "./_components/triumphs/titles";
 import { parseItems } from "./actions";
 import { Subclass } from "./_components/loadout/subclass";
 import { Weapons } from "./_components/loadout/weapons";
+import { ActivityHistory } from "./_components/activities/activity-history";
+import { getMilestones } from "@/components/destiny/milestones/actions";
+import { WeeklyShortMilestones } from "./_components/weekly/shortlist";
 
 interface Props {
   params: {
@@ -21,13 +24,14 @@ interface Props {
 export default async function CharacterPage({ params }: Props) {
   const { membershipType, membershipId, characterId } = params;
   const data = await getDestinyProfile(parseInt(membershipType), membershipId);
+  await getMilestones();
 
   const {
     characters,
     profile,
     characterProgressions,
     characterEquipment,
-    itemComponents,
+    characterActivities,
     profileCommendations,
     profileRecords,
     characterPresentationNodes,
@@ -35,6 +39,7 @@ export default async function CharacterPage({ params }: Props) {
 
   const character = characters.data![characterId];
   const progressions = characterProgressions.data![characterId].progressions;
+  const milestones = characterProgressions.data![characterId].milestones;
   const currentSeason = profile.data!.currentSeasonHash;
 
   if (!currentSeason) {
@@ -45,8 +50,6 @@ export default async function CharacterPage({ params }: Props) {
     characterEquipment.data![characterId].items
   );
 
-  console.log(subclass);
-
   return (
     <React.Fragment>
       <CharacterHeader
@@ -56,20 +59,22 @@ export default async function CharacterPage({ params }: Props) {
         titleRecordHash={character.titleRecordHash}
         profileCommendations={profileCommendations.data!}
       />
-      <section className="max-w-screen-xl w-full mx-auto py-12">
-        <div className="grid grid-cols-7 gap-2">
-          <div className="col-span-2 space-y-2 shrink-0">
-            <SeasonProgression
-              seasonHash={currentSeason}
-              progressions={progressions}
-            />
-            <Subclass
-              light={character.light}
-              membershipId={membershipId}
-              membershipType={parseInt(membershipType)}
-              stats={character.stats}
-              subclass={subclass}
-            />
+      <section className="container w-full mx-auto py-12">
+        <div className="grid lg:grid-cols-7  gap-2">
+          <div className="lg:col-span-2 space-y-2 shrink-0">
+            <div className="grid gap-2 max-lg:grid-cols-2 max-sm:grid-cols-1">
+              <SeasonProgression
+                seasonHash={currentSeason}
+                progressions={progressions}
+              />
+              <Subclass
+                light={character.light}
+                membershipId={membershipId}
+                membershipType={parseInt(membershipType)}
+                stats={character.stats}
+                subclass={subclass}
+              />
+            </div>
             <Weapons
               membershipId={membershipId}
               membershipType={parseInt(membershipType)}
@@ -81,8 +86,8 @@ export default async function CharacterPage({ params }: Props) {
               weapons={armor}
             />
           </div>
-          <div className="space-y-2 col-span-5">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-2 lg:col-span-5">
+            <div className="grid sm:grid-cols-2 gap-2">
               <Card>
                 <div className="flex w-full justify-center h-full items-center">
                   <Ranks {...characterProgressions.data![characterId]} />
@@ -94,37 +99,17 @@ export default async function CharacterPage({ params }: Props) {
                 }
               />
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              <Card>
-                <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                  Dungeon
-                </h5>
-                <h3 className="text-white font-bold text-xl">Duality</h3>
-              </Card>
+            <WeeklyShortMilestones
+              characterActivities={
+                characterActivities.data![characterId].availableActivities
+              }
+            />
 
-              <Card>
-                <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                  Nightfall
-                </h5>
-              </Card>
-              <Card>
-                <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                  Dungeon
-                </h5>
-              </Card>
-            </div>
-
-            <Card>
-              <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                Metrics
-              </h5>
-            </Card>
-
-            <Card>
-              <h5 className="text-xs uppercase text-yellow-500 font-bold">
-                Recent Activity
-              </h5>
-            </Card>
+            <ActivityHistory
+              characterId={characterId}
+              destinyMembershipId={membershipId}
+              membershipType={parseInt(membershipType)}
+            />
           </div>
         </div>
       </section>

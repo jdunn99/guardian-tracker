@@ -112,6 +112,49 @@ export function DestinyInstancedItem({
             <ArmorStats {...stats.data!.stats} />
           )}
         </div>
+        <div className="space-y-2">
+          {perks.data &&
+            perks.data!.perks.map((perk, index) => {
+              const destinyPerk =
+                manifest.DestinySandboxPerkDefinition[perk.perkHash];
+              return perk.isActive && perk.visible ? (
+                <div
+                  key={perk.perkHash}
+                  className={cn(
+                    "flex items-center p-2 gap-2",
+                    ammoType && index === 1
+                      ? "bg-slate-700/60"
+                      : "bg-transparent"
+                  )}
+                >
+                  <Image
+                    src={`https://bungie.net${destinyPerk.displayProperties.icon}`}
+                    width={28}
+                    height={28}
+                    alt=""
+                  />
+                  <div>
+                    <h3 className="text-slate-200">
+                      {destinyPerk.displayProperties.name}
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      {destinyPerk.displayProperties.description}
+                    </p>
+                  </div>
+                </div>
+              ) : null;
+            })}
+        </div>
+        {item.collectibleHash ? (
+          <div className="p-2 bg-slate-700/60">
+            <p className="text-xs text-slate-400">
+              {
+                manifest.DestinyCollectibleDefinition[item.collectibleHash]
+                  .sourceString
+              }
+            </p>
+          </div>
+        ) : null}
       </div>
     </DestinyItem>
   );

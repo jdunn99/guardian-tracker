@@ -47,7 +47,6 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
     url + (typeof params !== "undefined" ? parseParams(params!) : "");
 
   // fill in the API key, handle OAuth, etc., then make an HTTP request using the config.
-  console.log(process.env.NEXT_PUBLIC_API_KEY!);
   const result = await fetch(parsedUrl, {
     headers: {
       "X-Api-Key": process.env.NEXT_PUBLIC_API_KEY!,

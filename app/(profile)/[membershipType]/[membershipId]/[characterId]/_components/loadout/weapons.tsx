@@ -42,7 +42,6 @@ function Weapon({ weapon, membershipId, membershipType }: WeaponProps) {
       />
       <div className="flex justify-between w-full items-center">
         <div>
-          {weapon.itemInstanceId}
           <h3 className="font-semibold text-white">
             {item.displayProperties.name}
           </h3>
