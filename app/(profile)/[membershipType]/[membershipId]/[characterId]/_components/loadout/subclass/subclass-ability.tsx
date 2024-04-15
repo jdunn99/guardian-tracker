@@ -44,7 +44,7 @@ export function SubclassAbility({ ability, color }: SubclassAbilityProps) {
 
   return (
     <DestinyItem item={ability} includeIcon color={color}>
-      <div className="text-slate-400 italic text-xs space-y-4">
+      <div className="text-slate-400 italic text-xs space-y-4 p-2">
         {render.map((desc) =>
           desc.split(".").map((desc) => <p key={desc}>{desc}</p>)
         )}

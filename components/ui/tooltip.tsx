@@ -7,14 +7,18 @@ interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function TooltipHeader({ children, className, style }: TooltipProps) {
   return (
-    <div className={cn("p-2 space-y-1", className)} style={style}>
+    <div className={cn("p-2 ", className)} style={style}>
       {children}
     </div>
   );
 }
 
 export function TooltipTitle({ children }: TooltipProps) {
-  return <h1 className=" text-white font-medium text-xl">{children}</h1>;
+  return (
+    <h1 className=" text-slate-100 font-medium text-2xl uppercase">
+      {children}
+    </h1>
+  );
 }
 
 export function TooltipDescription({ children }: TooltipProps) {
@@ -48,7 +52,7 @@ export function TooltipBody({ children, className, ...rest }: TooltipProps) {
 export function DestinyTooltip({ children }: TooltipProps) {
   return (
     <HoverCardContent
-      className="bg-slate-800/50 rounded-none border-0 p-0 backdrop-blur w-96"
+      className="bg-slate-900/60 rounded-none border-0 p-0 backdrop-blur w-96"
       dir="left"
     >
       {children}

@@ -81,12 +81,15 @@ export function DestinyItem({
       </HoverCardTrigger>
       <DestinyTooltip>
         <TooltipHeader
+          className={cn(
+            state && isMasterworked(state) ? "border-t-2 border-yellow-500" : ""
+          )}
           style={{
             backgroundColor: color ?? COLORS[tier as keyof typeof COLORS],
           }}
         >
           <TooltipTitle>{item.displayProperties.name}</TooltipTitle>
-          <div className="flex justify-between w-full text-slate-300">
+          <TooltipDescription>
             <div
               className="flex 
             items-center gap-1"
@@ -94,12 +97,12 @@ export function DestinyItem({
               {...rest.map((temp) => <span key={temp}>{temp}</span>)}
             </div>
             {tier}
-          </div>
+          </TooltipDescription>
         </TooltipHeader>
         {includeIcon ? (
           <TooltipImage src={item.screenshot ?? item.secondaryIcon} />
         ) : null}
-        <TooltipBody>{children}</TooltipBody>
+        <TooltipBody className="p-0">{children}</TooltipBody>
       </DestinyTooltip>
     </HoverCard>
   );

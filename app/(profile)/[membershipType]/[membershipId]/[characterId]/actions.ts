@@ -77,7 +77,7 @@ export async function getItemFromInstanceId(
   }
 
   const result = await getItem($http, {
-    components: [305, 307],
+    components: [300, 302, 304, 305, 307],
     destinyMembershipId: membershipId,
     membershipType,
     itemInstanceId,
