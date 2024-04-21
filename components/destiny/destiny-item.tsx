@@ -55,6 +55,7 @@ export interface DestinyItemProps {
   includeIcon?: boolean;
   children?: React.ReactNode;
   color?: string;
+  size?: number;
 }
 
 export function DestinyItem({
@@ -63,6 +64,7 @@ export function DestinyItem({
   includeIcon = false,
   children,
   color,
+  size = 48,
 }: DestinyItemProps) {
   const [tier, ...rest] = item.itemTypeAndTierDisplayName.split(" ");
 
@@ -71,11 +73,11 @@ export function DestinyItem({
       <HoverCardTrigger asChild>
         <Image
           src={`https://bungie.net${item.displayProperties.icon}`}
-          width={48}
+          width={size}
           className={cn(
             state && isMasterworked(state) && "border border-yellow-500"
           )}
-          height={48}
+          height={size}
           alt={item.displayProperties.name}
         />
       </HoverCardTrigger>

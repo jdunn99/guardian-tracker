@@ -24,7 +24,7 @@ export const RACE_TYPES: Record<DestinyRace, string> = {
   3: "Unknown",
 };
 
-function CharacterEmblem(character: DestinyCharacterComponent) {
+export function CharacterEmblem(character: DestinyCharacterComponent) {
   const pathname = usePathname();
 
   return (

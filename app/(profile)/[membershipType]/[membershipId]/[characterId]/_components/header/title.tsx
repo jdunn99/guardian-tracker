@@ -57,12 +57,14 @@ export function CharacterTitle({
 
   return (
     <div className="flex items-center gap-1 text-xs">
-      <Image
-        src={`https://bungie.net${title.displayProperties.icon}`}
-        width={16}
-        height={16}
-        alt="title"
-      />
+      {title.displayProperties.icon ? (
+        <Image
+          src={`https://bungie.net${title.displayProperties.icon}`}
+          width={16}
+          height={16}
+          alt="title"
+        />
+      ) : null}
 
       <span
         className={cn(

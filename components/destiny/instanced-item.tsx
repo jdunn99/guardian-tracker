@@ -54,7 +54,7 @@ export function DestinyInstancedItem({
     return <DestinyItemSkeleton />;
   }
 
-  const { instance, perks, sockets, stats } = data;
+  const { instance, perks, stats } = data;
   const icon = damageType?.displayProperties.icon;
   const color = damageType?.color
     ? `rgb(${damageType.color.red},${damageType.color.green},${damageType.color.blue})`

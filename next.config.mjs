@@ -13,6 +13,12 @@ const nextConfig = {
         hostname: "www.bungie.net",
         port: "",
       },
+
+      {
+        protocol: "https",
+        hostname: "bungie.netundefined",
+        port: "",
+      },
     ],
   },
 };

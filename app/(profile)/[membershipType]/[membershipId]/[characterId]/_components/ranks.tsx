@@ -1,4 +1,5 @@
 "use client";
+import { Card } from "@/components/ui/card";
 import { useManifest } from "@/lib/manifest/useManifest";
 import {
   DestinyCharacterComponent,
@@ -40,44 +41,49 @@ export function Ranks(character: DestinyCharacterProgressionComponent) {
   }
 
   return (
-    <div className="flex items-start gap-6">
-      {ranks.map((rank) => {
-        const progression =
-          manifest.DestinyProgressionDefinition[rank.progressionHash];
+    <Card>
+      <h5 className="text-xs text-yellow-500 font-bold uppercase">Ranks</h5>
+      <div className="flex w-full justify-center h-full items-center">
+        <div className="grid grid-cols-6 w-full">
+          {ranks.map((rank) => {
+            const progression =
+              manifest.DestinyProgressionDefinition[rank.progressionHash];
 
-        return (
-          <div
-            className="flex flex-col justify-center items-center gap-2"
-            key={rank.progressionHash}
-          >
-            <Image
-              src={
-                HASH_TO_ICON[
-                  rank.progressionHash as unknown as keyof typeof HASH_TO_ICON
-                ]
-              }
-              className="w-6 h-6 opacity-90"
-              width={32}
-              height={32}
-              alt={rank.progressionHash.toString()}
-            />
-            <div className="flex items-center text-xs  text-slate-100">
-              {progression.steps[rank.level] ? (
+            return (
+              <div
+                className="flex flex-col justify-center items-center gap-2"
+                key={rank.progressionHash}
+              >
                 <Image
-                  src={`https://bungie.net${
-                    progression.steps[rank.level].icon
-                  }`}
-                  alt={rank.level.toString()}
-                  className="w-4 h-4"
-                  width={24}
-                  height={24}
+                  src={
+                    HASH_TO_ICON[
+                      rank.progressionHash as unknown as keyof typeof HASH_TO_ICON
+                    ]
+                  }
+                  className="w-6 h-6 opacity-90"
+                  width={32}
+                  height={32}
+                  alt={rank.progressionHash.toString()}
                 />
-              ) : null}
-              {rank.currentProgress}
-            </div>
-          </div>
-        );
-      })}
-    </div>
+                <div className="flex items-center text-xs  text-slate-100">
+                  {progression.steps[rank.level] ? (
+                    <Image
+                      src={`https://bungie.net${
+                        progression.steps[rank.level].icon
+                      }`}
+                      alt={rank.level.toString()}
+                      className="w-4 h-4"
+                      width={24}
+                      height={24}
+                    />
+                  ) : null}
+                  {rank.currentProgress}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </Card>
   );
 }

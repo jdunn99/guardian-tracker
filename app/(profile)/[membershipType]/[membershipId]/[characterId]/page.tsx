@@ -2,8 +2,6 @@ import React from "react";
 import { getDestinyProfile } from "../page";
 import { CharacterHeader } from "./_components/header";
 import { Ranks } from "./_components/ranks";
-import { CharacterLoadout } from "./_components/loadout/loadout";
-import { Card, ImageCard } from "@/components/ui/card";
 import { SeasonProgression } from "./_components/season";
 import { TriumphTitles } from "./_components/triumphs/titles";
 import { parseItems } from "./actions";
@@ -12,6 +10,7 @@ import { Weapons } from "./_components/loadout/weapons";
 import { ActivityHistory } from "./_components/activities/activity-history";
 import { getMilestones } from "@/components/destiny/milestones/actions";
 import { WeeklyShortMilestones } from "./_components/weekly/shortlist";
+import { StatsContainer } from "./_components/metrics/stats-container";
 
 interface Props {
   params: {
@@ -88,21 +87,23 @@ export default async function CharacterPage({ params }: Props) {
           </div>
           <div className="space-y-2 lg:col-span-5">
             <div className="grid sm:grid-cols-2 gap-2">
-              <Card>
-                <div className="flex w-full justify-center h-full items-center">
-                  <Ranks {...characterProgressions.data![characterId]} />
-                </div>
-              </Card>
+              <Ranks {...characterProgressions.data![characterId]} />
               <TriumphTitles
                 characterPresentationNodes={
                   characterPresentationNodes.data![characterId].nodes
                 }
               />
             </div>
+
             <WeeklyShortMilestones
               characterActivities={
                 characterActivities.data![characterId].availableActivities
               }
+            />
+            <StatsContainer
+              destinyMembershipId={membershipId}
+              membershipType={parseInt(membershipType)}
+              characterId={characterId}
             />
 
             <ActivityHistory

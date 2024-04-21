@@ -37,7 +37,7 @@ export function WeeklyShortMilestones({
   }
 
   return (
-    <div className="grid sm:grid-cols-3 gap-2">
+    <div className={`grid sm:grid-cols-3 gap-2`}>
       {milestones.map((milestone) => (
         <Card key={milestone.hash}>
           <h5 className="text-xs uppercase text-yellow-500 font-bold">

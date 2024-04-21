@@ -29,7 +29,7 @@ export function ActivitiesTable({ ...params }: ActivitiesTableProps) {
 
   return (
     <ScrollCard>
-      <div className="py-2">
+      <div className="space-y-1">
         {data.map((activity) => (
           <ActivityItem key={activity.period} {...activity} />
         ))}

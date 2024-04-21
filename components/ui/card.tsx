@@ -4,11 +4,14 @@ import React from "react";
 import { ScrollArea } from "./scroll-area";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
-export function Card({ children, ...rest }: CardProps) {
+export function Card({ children, className, ...rest }: CardProps) {
   return (
     <div
       {...rest}
-      className="group break-words relative w-full p-4  border-slate-700/65 rounded-lg border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors "
+      className={cn(
+        "group break-words relative w-full p-4  border-slate-700/65 rounded-lg border bg-gradient-to-br from-slate-800 to bg-slate-800/25 hover:border-slate-700 transition-colors ",
+        className
+      )}
     >
       {children}
     </div>

@@ -21,8 +21,8 @@ export async function getRecentActivities(params: GetActivityHistoryParams) {
 
 export async function ActivityHistory(params: GetActivityHistoryParams) {
   return (
-    <Card>
-      <h5 className="text-xs uppercase text-yellow-500 font-bold">
+    <Card className="p-0">
+      <h5 className="text-xs uppercase text-yellow-500 font-bold p-4">
         Recent Activity
       </h5>
       <ActivitiesTable {...params} />

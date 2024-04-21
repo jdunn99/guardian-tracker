@@ -45,6 +45,11 @@ export function useMilestones() {
         ].displayProperties.name.split(":");
       const name = split.splice(0, split.length - 1).join();
 
+      // Don't want this
+      if (name === "Onslaught") {
+        continue;
+      }
+
       const [challengeHash] = activity.challengeObjectiveHashes;
       const challenge = manifest.DestinyObjectiveDefinition[challengeHash];
       const icon =
