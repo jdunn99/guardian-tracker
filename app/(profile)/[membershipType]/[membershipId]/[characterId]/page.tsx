@@ -12,7 +12,7 @@ import { getMilestones } from "@/components/destiny/milestones/actions";
 import { WeeklyShortMilestones } from "./_components/weekly/shortlist";
 import { StatsContainer } from "./_components/metrics/stats-container";
 
-interface Props {
+export interface Props {
   params: {
     membershipType: string;
     membershipId: string;

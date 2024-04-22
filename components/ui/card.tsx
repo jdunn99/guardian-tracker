@@ -18,8 +18,10 @@ export function Card({ children, className, ...rest }: CardProps) {
   );
 }
 
-export function ScrollCard({ children }: CardProps) {
-  return <ScrollArea className="h-[75vh]">{children}</ScrollArea>;
+export function ScrollCard({ children, className }: CardProps) {
+  return (
+    <ScrollArea className={cn("h-[75vh]", className)}>{children}</ScrollArea>
+  );
 }
 
 interface ImageCardProps extends CardProps {
