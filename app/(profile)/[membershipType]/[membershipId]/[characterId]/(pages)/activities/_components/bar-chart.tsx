@@ -12,8 +12,11 @@ import {
   Label,
   Tooltip,
   Bar,
+  Cell,
 } from "recharts";
-import { useFilters } from "../filter/filterContext";
+import { useFilterDispatch, useFilters } from "../filter/filterContext";
+import { cn } from "@/lib/utils";
+import { ChartCustomTooltip } from "./charts/chart-custom-tooltip";
 
 export function TestBarChart({
   aggregateActivities,
@@ -22,10 +25,23 @@ export function TestBarChart({
 }) {
   const manifest = useManifest();
   const { filters } = useFilters();
+  const dispatch = useFilterDispatch();
+
+  const isSelected = React.useCallback(
+    (name: string) => {
+      if (!manifest || !filters.activity) {
+        return false;
+      }
+
+      const filteredActivity =
+        manifest.DestinyActivityDefinition[parseInt(filters.activity)];
+
+      return filteredActivity.displayProperties.name === name;
+    },
+    [manifest, filters.activity]
+  );
 
   const aggregateData = React.useMemo(() => {
-    const result: any[] = [];
-
     const q: any = {};
 
     if (!manifest) {
@@ -66,32 +82,31 @@ export function TestBarChart({
         q[destinyActivity.displayProperties.name] = {
           name: destinyActivity.displayProperties.name,
           completions: activity.values.activityCompletions.basic.value,
+          hash: destinyActivity.hash,
         };
       }
     }
 
-    return q;
+    return Object.values(q);
   }, [manifest, aggregateActivities, filters]);
 
   return (
-    <div className="w-full lg:col-span-4 h-96">
+    <div className="w-full h-96 p-2 xl:col-span-4">
       <p className="text-xs text-slate-400">
         Click on a Bar to Filter by Activity
       </p>
       <ResponsiveContainer>
         <BarChart
-          data={Object.values(aggregateData)}
-          margin={{ top: 20, bottom: 40 }}
+          data={aggregateData}
+          margin={{ top: 20, bottom: 40, right: 30 }}
         >
           {/* <CartesianGrid strokeDasharray="3 3" className="stroke-slate-600" /> */}
           <XAxis
-            // hide={Object.values(aggregateData).length > 20}
             dataKey="name"
             className="text-xs"
             // textAnchor="end"
             tick={{
-              display:
-                Object.values(aggregateData).length > 20 ? "none" : "block",
+              display: aggregateData.length > 20 ? "none" : "block",
             }}
           >
             <Label
@@ -109,8 +124,39 @@ export function TestBarChart({
               position="insideLeft"
             />
           </YAxis>
-          <Tooltip cursor={{ className: "fill-slate-800/50" }} />
-          <Bar dataKey="completions" className="fill-slate-700" />
+          <Tooltip
+            cursor={{ className: "fill-slate-800/50" }}
+            content={(props) => (
+              <ChartCustomTooltip {...props} secondLabel="Completions" />
+            )}
+          />
+          <Bar
+            dataKey="completions"
+            className="fill-slate-700"
+            onClick={(data) => {
+              if (filters.activity === data.hash) {
+                // setSelected(0);
+                dispatch!({
+                  type: "Remove filter",
+                  payload: { field: "activity" },
+                });
+              } else {
+                // setSelected(data.hash);
+
+                dispatch!({
+                  type: "Add filter",
+                  payload: { field: "activity", value: data.hash },
+                });
+              }
+            }}
+          >
+            {aggregateData.map((data, index) => (
+              <Cell
+                key={`cell-${index}`}
+                className={cn(isSelected(data.name) ? "fill-yellow-500" : "")}
+              />
+            ))}
+          </Bar>
           {/* <Bar dataKey="wins" className="fill-slate-600 " /> */}
         </BarChart>
       </ResponsiveContainer>

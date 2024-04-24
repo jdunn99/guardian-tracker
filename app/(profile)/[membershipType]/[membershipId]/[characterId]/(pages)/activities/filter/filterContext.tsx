@@ -11,7 +11,7 @@ import { Filter } from "lucide-react";
  * Can filter by Activity Mode, Activity, Location
  */
 
-type Filters = {
+export type Filters = {
   activityMode: string | undefined;
   activity: string | undefined;
   // location: string | undefined
@@ -35,11 +35,19 @@ const FilterDispatchContext =
   React.createContext<React.Dispatch<Actions> | null>(null);
 
 function activitiesDataReducer(state: FilterState, action: Actions) {
-  console.log(action);
-
   switch (action.type) {
     case "Add filter": {
       const { field, value } = action.payload;
+
+      if (field === "activityMode") {
+        return {
+          ...state,
+          filters: {
+            activity: undefined,
+            [field]: value,
+          },
+        };
+      }
 
       return {
         ...state,

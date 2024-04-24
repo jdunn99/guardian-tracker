@@ -23,7 +23,6 @@ export interface Props {
 export default async function CharacterPage({ params }: Props) {
   const { membershipType, membershipId, characterId } = params;
   const data = await getDestinyProfile(parseInt(membershipType), membershipId);
-  await getMilestones();
 
   const {
     characters,
@@ -38,7 +37,6 @@ export default async function CharacterPage({ params }: Props) {
 
   const character = characters.data![characterId];
   const progressions = characterProgressions.data![characterId].progressions;
-  const milestones = characterProgressions.data![characterId].milestones;
   const currentSeason = profile.data!.currentSeasonHash;
 
   if (!currentSeason) {

@@ -16,6 +16,7 @@ import { useManifest } from "@/lib/manifest/useManifest";
 import { DestinyAggregateActivityResults } from "bungie-api-ts/destiny2";
 import { useFilterDispatch, useFilters } from "../filter/filterContext";
 import { cn } from "@/lib/utils";
+import { ChartCustomTooltip } from "./charts/chart-custom-tooltip";
 
 export function AggregateDataBarChart({
   aggregateActivities,
@@ -90,7 +91,7 @@ export function AggregateDataBarChart({
   }, [manifest, aggregateActivities]);
 
   return (
-    <div className="w-full lg:col-span-2 h-96">
+    <div className="w-full p-2 h-96 xl:col-span-2">
       <p className="text-xs text-slate-400">
         Click on a Bar to Filter by Activity Type
       </p>
@@ -101,12 +102,7 @@ export function AggregateDataBarChart({
           layout="vertical"
         >
           {/* <CartesianGrid strokeDasharray="3 3" className="stroke-slate-600" /> */}
-          <XAxis
-            type="number"
-            className="text-xs"
-            // textAnchor="end"
-            // tick={{ display: "none" }}
-          >
+          <XAxis type="number" className="text-xs">
             <Label
               value="Completions"
               offset={10}
@@ -130,7 +126,12 @@ export function AggregateDataBarChart({
               position="insideLeft"
             />
           </YAxis>
-          <Tooltip cursor={{ className: "fill-slate-800/50" }} />
+          <Tooltip
+            cursor={{ className: "fill-slate-800/50" }}
+            content={(props) => (
+              <ChartCustomTooltip {...props} secondLabel="Completions" />
+            )}
+          />
           <Bar
             dataKey="completions"
             className="fill-slate-700"

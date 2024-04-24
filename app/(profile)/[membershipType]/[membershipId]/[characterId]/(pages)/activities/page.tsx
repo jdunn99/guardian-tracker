@@ -8,6 +8,13 @@ import { AggregateDataBarChart } from "./_components/aggregate-data-bar-chart";
 import { ActivityFilters } from "./_components/activity-filters";
 import { TestBarChart } from "./_components/bar-chart";
 import { AggregateDataTable } from "./_components/aggregate-data-table";
+import React from "react";
+import { CharacterHeader } from "../../_components/header";
+import { getDestinyProfile } from "../../../page";
+import { LineChartsContainer } from "./_components/charts/line/line-container";
+import { ActivitiesList } from "./_components/table/activities-list";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollAreaThumb } from "@radix-ui/react-scroll-area";
 
 export async function getAggregateActivities(
   params: GetDestinyAggregateActivityStatsParams
@@ -31,24 +38,39 @@ export default async function CharacterActivitiesPage({ params }: Props) {
     destinyMembershipId: membershipId,
   });
 
-  return (
-    <div className="grid pt-8">
-      <div className="grid gap-4 lg:grid-cols-10 h-96 px-8">
-        <ActivityFilters aggregateActivities={aggregateActivities} />
+  // const data = await getDestinyProfile(parseInt(membershipType), membershipId);
 
-        <AggregateDataBarChart aggregateActivities={aggregateActivities} />
-        <TestBarChart aggregateActivities={aggregateActivities} />
-        <div className="col-span-3">
-          {/* <ActivitiesTable
-            {...params}
-            mode={DestinyActivityModeType.Raid}
-            membershipType={parseInt(membershipType)}
-            destinyMembershipId={membershipId}
-          /> */}
-          <div />
+  // const { characters, profile, profileCommendations, profileRecords } = data;
+  // const character = characters.data![params.characterId];
+
+  return (
+    <React.Fragment>
+      {/* <CharacterHeader
+        character={character}
+        profile={profile.data!}
+        records={profileRecords.data!.records}
+        titleRecordHash={character.titleRecordHash}
+        profileCommendations={profileCommendations.data!}
+      /> */}
+      <section className="grid gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-10">
+          <ActivityFilters aggregateActivities={aggregateActivities} />
+          <AggregateDataBarChart aggregateActivities={aggregateActivities} />
+          <TestBarChart aggregateActivities={aggregateActivities} />
+
+          <LineChartsContainer params={params} />
         </div>
-      </div>
-      <AggregateDataTable aggregateActivities={aggregateActivities} />
-    </div>
+        <div className="grid gap-4 grid-cols-8 ">
+          <ScrollArea className="col-span-5 h-[calc(100vh-432px)] ">
+            <AggregateDataTable aggregateActivities={aggregateActivities} />
+            <ScrollBar className="fill-slate-900" />
+          </ScrollArea>
+
+          <ScrollArea className="col-span-3 h-[calc(100vh-432px)] overflow-auto">
+            <ActivitiesList params={params} />
+          </ScrollArea>
+        </div>
+      </section>
+    </React.Fragment>
   );
 }

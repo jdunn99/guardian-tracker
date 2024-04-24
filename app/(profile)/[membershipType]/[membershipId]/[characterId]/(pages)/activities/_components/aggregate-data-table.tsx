@@ -23,7 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { useFilters } from "../filter/filterContext";
+import { useFilterDispatch, useFilters } from "../filter/filterContext";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface AggregateDataTableProps {
   aggregateActivities: DestinyAggregateActivityResults;
@@ -99,6 +100,7 @@ export function AggregateDataTable({
 }: AggregateDataTableProps) {
   const manifest = useManifest();
   const { filters } = useFilters();
+  const dispatch = useFilterDispatch();
 
   const mergedColumnData = React.useMemo(() => {
     const data: AggregateColumn[] = [];
@@ -137,6 +139,17 @@ export function AggregateDataTable({
         }
       }
 
+      if (filters.activity) {
+        const filterActivity =
+          manifest.DestinyActivityDefinition[parseInt(filters.activity)];
+        if (
+          filterActivity.displayProperties.name !==
+          destinyActivity.displayProperties.name
+        ) {
+          continue;
+        }
+      }
+
       data.push({
         values: activity.values,
         activity: destinyActivity,
@@ -158,61 +171,72 @@ export function AggregateDataTable({
   }
 
   return (
-    <div className="">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+    <Table className="relative">
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow
+            key={headerGroup.id}
+            className="bg-slate-800 border-b-slate-700/50  w-full hover:bg-slate-800 text-xs sticky top-0"
+          >
+            {headerGroup.headers.map((header) => {
+              return (
+                <TableHead key={header.id} className="text-white !text-xs">
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row) => (
             <TableRow
-              key={headerGroup.id}
-              className="bg-slate-800 border-b-slate-700/50  w-full hover:bg-slate-800"
+              key={row.id}
+              data-state={row.getIsSelected() && "selected"}
+              // onClick={() => {
+              //   row.toggleSelected(!row.getIsSelected());
+              // }}
+              onClick={() => {
+                dispatch!({
+                  type: "Add filter",
+                  payload: {
+                    field: "activity",
+                    value: row.original.activity.hash.toString(),
+                  },
+                });
+              }}
+              className=" border-slate-700/50 bg-slate-800/30 hover:bg-slate-900 text-xs"
             >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id} className="text-white text-sm">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
+              {row.getVisibleCells().map((cell, index) => (
+                <TableCell
+                  key={cell.id}
+                  className={cn(
+                    index === 0 ? "text-slate-100" : "text-slate-400",
+                    "text-xs"
+                  )}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className=" border-slate-700/50 bg-slate-800/30 hover:bg-slate-900"
-              >
-                {row.getVisibleCells().map((cell, index) => (
-                  <TableCell
-                    key={cell.id}
-                    className={cn(
-                      index === 0 ? "text-slate-100" : "text-slate-400"
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell
-                colSpan={aggregateColumns.length}
-                className="h-24 text-center"
-              >
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={aggregateColumns.length}
+              className="h-24 text-center"
+            >
+              No results.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
