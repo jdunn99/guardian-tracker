@@ -21,6 +21,9 @@ export function ActivitiesList({ params }: Props) {
 
   return (
     <div className="h-full ">
+      <div className="w-full sticky top-0 z-99 bg-slate-800 border-b border-slate-700/50">
+        <h1 className="text-white p-3">Recent Activities</h1>
+      </div>
       {data.map((activity) => (
         <ActivityItem key={activity.period} {...activity} />
       ))}

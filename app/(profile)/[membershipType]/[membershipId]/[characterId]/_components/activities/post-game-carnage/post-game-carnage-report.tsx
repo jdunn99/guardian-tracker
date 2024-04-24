@@ -34,8 +34,6 @@ export function PostGameCarnageReport({
     return null;
   }
 
-  console.log(activity, data.entries);
-
   return (
     <React.Fragment>
       <div

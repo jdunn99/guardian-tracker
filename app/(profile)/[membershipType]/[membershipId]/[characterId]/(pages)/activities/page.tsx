@@ -38,21 +38,21 @@ export default async function CharacterActivitiesPage({ params }: Props) {
     destinyMembershipId: membershipId,
   });
 
-  // const data = await getDestinyProfile(parseInt(membershipType), membershipId);
+  const data = await getDestinyProfile(parseInt(membershipType), membershipId);
 
-  // const { characters, profile, profileCommendations, profileRecords } = data;
-  // const character = characters.data![params.characterId];
+  const { characters, profile, profileCommendations, profileRecords } = data;
+  const character = characters.data![params.characterId];
 
   return (
     <React.Fragment>
-      {/* <CharacterHeader
+      <CharacterHeader
         character={character}
         profile={profile.data!}
         records={profileRecords.data!.records}
         titleRecordHash={character.titleRecordHash}
         profileCommendations={profileCommendations.data!}
-      /> */}
-      <section className="grid gap-8">
+      />
+      <section className="grid gap-8 pt-8">
         <div className="grid md:grid-cols-2 xl:grid-cols-10">
           <ActivityFilters aggregateActivities={aggregateActivities} />
           <AggregateDataBarChart aggregateActivities={aggregateActivities} />
@@ -61,12 +61,12 @@ export default async function CharacterActivitiesPage({ params }: Props) {
           <LineChartsContainer params={params} />
         </div>
         <div className="grid gap-4 grid-cols-8 ">
-          <ScrollArea className="col-span-5 h-[calc(100vh-432px)] ">
+          <ScrollArea className="col-span-5 h-[calc(100vh-588px)] ">
             <AggregateDataTable aggregateActivities={aggregateActivities} />
             <ScrollBar className="fill-slate-900" />
           </ScrollArea>
 
-          <ScrollArea className="col-span-3 h-[calc(100vh-432px)] overflow-auto">
+          <ScrollArea className="col-span-3 h-[calc(100vh-588px)] overflow-auto">
             <ActivitiesList params={params} />
           </ScrollArea>
         </div>

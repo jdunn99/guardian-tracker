@@ -12,6 +12,9 @@ import { CharacterTitle, CharacterTitleProps } from "./header/title";
 import { useManifest } from "@/lib/manifest/useManifest";
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface CharacterHeaderProps extends CharacterTitleProps {
   character: DestinyCharacterComponent;
@@ -41,6 +44,9 @@ export function CharacterHeader({
   profileCommendations,
 }: CharacterHeaderProps) {
   const manifest = useManifest();
+  const pathname = usePathname().split("/");
+  const path = pathname.pop() ?? "";
+  const paths = pathname.join("/");
 
   if (!manifest) {
     // TODO: Add skeleton
@@ -111,18 +117,41 @@ export function CharacterHeader({
                 </div>
               </div>
             </div>
-            <ul className="flex items-start gap-4  font-semibold pb-4 transition-all text-slate-300">
-              <li className="pb-4 border-b-2 text-white cursor-pointer">
+            <div className="flex items-start gap-4  font-semibold pb-4 transition-all text-slate-300">
+              <Link
+                href={paths + "/overview"}
+                className={cn(
+                  "pb-4   cursor-pointer",
+                  path === "overview"
+                    ? "border-b-2 text-white"
+                    : "text-slate-200"
+                )}
+              >
                 Overview
-              </li>
-              <li className="pb-4  hover:text-white cursor-pointer">
+              </Link>
+              <Link
+                href={paths + "/milestones"}
+                className={cn(
+                  "pb-4  cursor-pointer",
+                  path === "milestones"
+                    ? "border-b-2 text-white"
+                    : "text-slate-200"
+                )}
+              >
                 Milestones
-              </li>
-              <li className="pb-4 hover:text-white cursor-pointer">
+              </Link>
+              <Link
+                href={paths + "/activities"}
+                className={cn(
+                  "pb-4  cursor-pointer",
+                  path === "activities"
+                    ? "border-b-2 text-white"
+                    : "text-slate-200"
+                )}
+              >
                 Activities
-              </li>
-              <li className="pb-4 hover:text-white cursor-pointer">Builds</li>
-            </ul>
+              </Link>
+            </div>
             {/* <div className="ml-4 absolute left-20 bottom-6">
               <h1 className="text-4xl font-bold text-white">
                 {profile.userInfo.bungieGlobalDisplayName}

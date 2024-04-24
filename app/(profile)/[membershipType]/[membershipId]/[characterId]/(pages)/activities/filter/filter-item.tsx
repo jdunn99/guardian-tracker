@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@radix-ui/react-label";
 import React from "react";
-import { Filters, useFilterDispatch } from "./filterContext";
+import { Filters, useFilterDispatch, useFilters } from "./filterContext";
 import { DestinyActivityDefinition } from "bungie-api-ts/destiny2";
 
 interface FilterItemProps {
@@ -22,6 +22,17 @@ interface FilterItemProps {
 export function FilterItem({ field, label, data }: FilterItemProps) {
   const dispatch = useFilterDispatch();
   const [selected, setSelected] = React.useState<string>();
+  const { filters } = useFilters();
+
+  React.useEffect(() => {
+    if (filters[field]) {
+      if (filters[field] !== selected) {
+        setSelected(filters[field]);
+      }
+    } else {
+      setSelected("(All)");
+    }
+  }, [filters, selected, field]);
 
   return (
     <div className="w-full">
@@ -30,6 +41,15 @@ export function FilterItem({ field, label, data }: FilterItemProps) {
         value={selected}
         onValueChange={(value) => {
           setSelected(value);
+
+          if (field === "activityMode") {
+            dispatch!({
+              type: "Remove filter",
+              payload: {
+                field: "activity",
+              },
+            });
+          }
 
           if (value !== "(All)") {
             dispatch!({
