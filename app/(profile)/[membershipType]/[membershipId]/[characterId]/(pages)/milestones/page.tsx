@@ -19,8 +19,7 @@ export default async function CharacterMilestonePage({ params }: Props) {
     components: [202, 204],
   });
 
-  const test: any = await getPublicMilestones($http);
-
+  const test = await getPublicMilestones($http);
   if (!result.Response) {
     throw new Error("Something went wrong fetching the results");
   }

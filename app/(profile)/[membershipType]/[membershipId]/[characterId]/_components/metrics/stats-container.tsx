@@ -130,8 +130,6 @@ export async function StatsContainer(args: StatsContainerProps) {
   let timePlayed = 0;
 
   for (const key of keys) {
-    console.log(typeof stats, typeof stats["allPvP"]);
-
     if (!stats[key]) {
       continue;
     }
@@ -399,7 +397,9 @@ export async function StatsContainer(args: StatsContainerProps) {
                       </h5>
                     </div>
                     <div>
-                      {key.allTime.activitiesCleared.basic.value.toLocaleString()}
+                      {key.allTime
+                        ? key.allTime.activitiesCleared.basic.value.toLocaleString()
+                        : 0}
                       <h5 className="text-yellow-500 text-[8px] font-bold uppercase">
                         Clears
                       </h5>

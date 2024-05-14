@@ -29,8 +29,6 @@ export default async function CharacterPage({ params }: Props) {
     characterProgressions,
     characterEquipment,
     characterActivities,
-    profileCommendations,
-    profileRecords,
     characterPresentationNodes,
   } = data;
 
@@ -47,70 +45,61 @@ export default async function CharacterPage({ params }: Props) {
   );
 
   return (
-    <React.Fragment>
-      <CharacterHeader
-        character={character}
-        profile={profile.data!}
-        records={profileRecords.data!.records}
-        titleRecordHash={character.titleRecordHash}
-        profileCommendations={profileCommendations.data!}
-      />
-      <section className="container w-full mx-auto py-12">
-        <div className="grid lg:grid-cols-7  gap-2">
-          <div className="lg:col-span-2 space-y-2 shrink-0">
-            <div className="grid gap-2 max-lg:grid-cols-2 max-sm:grid-cols-1">
-              <SeasonProgression
-                seasonHash={currentSeason}
-                progressions={progressions}
-              />
-              <Subclass
-                light={character.light}
-                membershipId={membershipId}
-                membershipType={parseInt(membershipType)}
-                stats={character.stats}
-                subclass={subclass}
-              />
-            </div>
-            <Weapons
-              membershipId={membershipId}
-              membershipType={parseInt(membershipType)}
-              weapons={weapons}
+    <section className="container w-full mx-auto py-12">
+      <div className="grid lg:grid-cols-7  gap-2">
+        <div className="lg:col-span-2 space-y-2 shrink-0">
+          <div className="grid gap-2 max-lg:grid-cols-2 max-sm:grid-cols-1">
+            <SeasonProgression
+              seasonHash={currentSeason}
+              progressions={progressions}
             />
-            <Weapons
+            <Subclass
+              light={character.light}
               membershipId={membershipId}
               membershipType={parseInt(membershipType)}
-              weapons={armor}
+              stats={character.stats}
+              subclass={subclass}
             />
           </div>
-          <div className="space-y-2 lg:col-span-5">
-            <div className="grid sm:grid-cols-2 gap-2">
-              <Ranks {...characterProgressions.data![characterId]} />
-              <TriumphTitles
-                characterPresentationNodes={
-                  characterPresentationNodes.data![characterId].nodes
-                }
-              />
-            </div>
-
-            <WeeklyShortMilestones
-              characterActivities={
-                characterActivities.data![characterId].availableActivities
+          <Weapons
+            membershipId={membershipId}
+            membershipType={parseInt(membershipType)}
+            weapons={weapons}
+          />
+          <Weapons
+            membershipId={membershipId}
+            membershipType={parseInt(membershipType)}
+            weapons={armor}
+          />
+        </div>
+        <div className="space-y-2 lg:col-span-5">
+          <div className="grid sm:grid-cols-2 gap-2">
+            <Ranks {...characterProgressions.data![characterId]} />
+            <TriumphTitles
+              characterPresentationNodes={
+                characterPresentationNodes.data![characterId].nodes
               }
             />
-            <StatsContainer
-              destinyMembershipId={membershipId}
-              membershipType={parseInt(membershipType)}
-              characterId={characterId}
-            />
-
-            <ActivityHistory
-              characterId={characterId}
-              destinyMembershipId={membershipId}
-              membershipType={parseInt(membershipType)}
-            />
           </div>
+
+          <WeeklyShortMilestones
+            characterActivities={
+              characterActivities.data![characterId].availableActivities
+            }
+          />
+          <StatsContainer
+            destinyMembershipId={membershipId}
+            membershipType={parseInt(membershipType)}
+            characterId={characterId}
+          />
+
+          <ActivityHistory
+            characterId={characterId}
+            destinyMembershipId={membershipId}
+            membershipType={parseInt(membershipType)}
+          />
         </div>
-      </section>
-    </React.Fragment>
+      </div>
+    </section>
   );
 }

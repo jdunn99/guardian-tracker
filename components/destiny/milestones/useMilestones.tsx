@@ -43,7 +43,11 @@ export function useMilestones() {
         manifest.DestinyActivityDefinition[
           activity.activityHash
         ].displayProperties.name.split(":");
-      const name = split.splice(0, split.length - 1).join();
+
+      const name =
+        split.length > 1
+          ? split.splice(0, split.length - 1).join()
+          : split.join();
 
       // Don't want this
       if (name === "Onslaught") {
@@ -53,7 +57,7 @@ export function useMilestones() {
       const [challengeHash] = activity.challengeObjectiveHashes;
       const challenge = manifest.DestinyObjectiveDefinition[challengeHash];
       const icon =
-        manifest.DestinyActivityDefinition[activity.activityHash]
+        manifest.DestinyMilestoneDefinition[milestone.milestoneHash]
           .displayProperties.icon;
 
       results.push({
@@ -69,9 +73,6 @@ export function useMilestones() {
             ? "Weekly Exotic Mission"
             : challenge.displayProperties.name,
       });
-
-      // const milestone = manifest.DestinyMilestoneDefinition[milestoneHash];
-      // results.push(manifest.DestinyMilestoneDefinition[milestoneHash]);
     }
 
     return results;

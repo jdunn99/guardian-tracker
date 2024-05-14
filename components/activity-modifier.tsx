@@ -5,14 +5,18 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import Image from "next/image";
 
 export function ActivityModifier(modifier: DestinyActivityModifierDefinition) {
+  if (modifier.displayProperties.name === "") {
+    return null;
+  }
+
   return (
     <HoverCard openDelay={50} closeDelay={50}>
       <HoverCardTrigger asChild>
         <Image
           src={`https://bungie.net${modifier.displayProperties.icon}`}
-          width={32}
+          width={20}
           className="opacity-80 hover:opacity-100 transition-opacity"
-          height={32}
+          height={20}
           alt={modifier.displayProperties.name}
         />
       </HoverCardTrigger>

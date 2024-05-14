@@ -55,6 +55,9 @@ export async function $http<Return>(config: HttpClientConfig): Promise<Return> {
     },
     method,
     body: JSON.stringify(body),
+    next: {
+      revalidate: 3600 * 24, // once a day
+    },
   });
 
   const json = await result.json();
