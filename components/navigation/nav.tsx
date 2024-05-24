@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { NavLink } from "./nav-link";
@@ -19,13 +20,11 @@ export function Nav() {
                 <p className="font-bold">Tracker</p>
               </div>
             </Link>
-
-            <NavLink href="/builds" title="Builds" />
-            <NavLink href="/weapons" title="Weapons" />
           </div>
-        </div>
-        <div className="w-96">
-          <SearchBar />
+          <div className="w-96">
+            <SearchBar />
+          </div>
+          <div />
         </div>
       </div>
     </header>

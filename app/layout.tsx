@@ -5,6 +5,7 @@ import React from "react";
 
 import { SWRProvider } from "./swr-provider";
 import { ManifestProvider } from "@/lib/manifest/useManifest";
+import { Nav } from "@/components/navigation/nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default async function RootLayout({
         <SWRProvider>
           <ManifestProvider>
             <main className="min-h-screen  w-full bg-slate-900">
+              <Nav />
               {children}
             </main>
           </ManifestProvider>

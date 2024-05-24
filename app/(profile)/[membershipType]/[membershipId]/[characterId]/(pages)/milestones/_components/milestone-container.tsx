@@ -12,6 +12,7 @@ import React from "react";
 import { ActivitySelect } from "./activity-select";
 import { MilestoneActivityItem } from "./milestone-activity-item";
 import { MilestoneQuestItem } from "./milestone-quest-item";
+import { useMilestones } from "@/components/destiny/milestones/_useMilestones";
 
 // Raid, Dungeon, Crucible, Gambit, Story, Strike, Scored Nightfall Strike
 // TYQTQ18J7JR15T
@@ -27,6 +28,7 @@ export type Milestone = {
   description: string;
   activities: DestinyPublicMilestoneChallengeActivity[];
   hash: number;
+  isComplete?: boolean;
 };
 
 export function Milestones({
@@ -36,91 +38,8 @@ export function Milestones({
   milestones: Record<number, DestinyMilestone>;
   publicMilestones: Record<number, DestinyPublicMilestone>;
 }) {
-  const manifest = useManifest();
   const [selected, setSelected] = React.useState<string>("All");
-
-  const data = React.useMemo(() => {
-    if (!manifest) {
-      return null;
-    }
-
-    const activityTypes: Record<string, Category> = {};
-    const milestonesByKey: Record<string, Milestone[]> = {};
-    const quests: Milestone[] = [];
-
-    for (const key of Object.keys(publicMilestones)) {
-      const milestone = publicMilestones[parseInt(key)];
-      const destinyMilestone =
-        manifest.DestinyMilestoneDefinition[milestone.milestoneHash];
-
-      let name = "";
-
-      if (
-        destinyMilestone.displayProperties.name === "Weekly Ritual Challenge"
-      ) {
-        continue;
-      }
-
-      if (milestone.activities) {
-        for (const activity of milestone.activities) {
-          const destinyActivity =
-            manifest.DestinyActivityDefinition[activity.activityHash];
-
-          if (!destinyActivity.directActivityModeHash) continue;
-
-          const activityType =
-            manifest.DestinyActivityModeDefinition[
-              destinyActivity.directActivityModeHash
-            ];
-
-          name = activityType.displayProperties.name;
-
-          activityTypes[name] = {
-            ...activityType.displayProperties,
-          };
-        }
-
-        if (milestonesByKey[name]) {
-          milestonesByKey[name] = [
-            ...milestonesByKey[name],
-            {
-              activities: milestone.activities,
-              ...destinyMilestone.displayProperties,
-              hash: destinyMilestone.hash,
-            },
-          ];
-        } else {
-          milestonesByKey[name] = [
-            {
-              activities: milestone.activities,
-              ...destinyMilestone.displayProperties,
-              hash: destinyMilestone.hash,
-            },
-          ];
-        }
-      }
-
-      if (milestone.availableQuests) {
-        const [quest] = milestone.availableQuests;
-
-        const destinyQuest =
-          manifest.DestinyInventoryItemDefinition[quest.questItemHash];
-
-        const icon = destinyMilestone.displayProperties.hasIcon
-          ? destinyMilestone.displayProperties.icon
-          : destinyQuest.displayProperties.icon;
-
-        quests.push({
-          activities: [],
-          ...destinyMilestone.displayProperties,
-          icon,
-          hash: destinyMilestone.hash,
-        });
-      }
-    }
-
-    return { activityTypes, milestonesByKey, quests };
-  }, [manifest, publicMilestones]);
+  const data = useMilestones({ milestones, publicMilestones });
 
   return (
     <div className="w-full container mx-auto pb-32 pt-8">

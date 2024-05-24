@@ -13,9 +13,11 @@ import React from "react";
 import Image from "next/image";
 import { useManifest } from "@/lib/manifest/useManifest";
 import { ActivityModifier } from "@/components/activity-modifier";
+import { cn } from "@/lib/utils";
 
 interface MilestoneActivityItemProps {
   milestone: Milestone;
+  isComplete?: boolean;
 }
 
 export function MilestoneActivityItem({
@@ -38,8 +40,6 @@ export function MilestoneActivityItem({
     }
 
     const result = [];
-
-    console.log(milestone.hash);
 
     for (const activitiy of milestone.activities) {
       const destinyActivity =
@@ -77,7 +77,14 @@ export function MilestoneActivityItem({
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <div className="w-full bg-slate-800/30 border border-slate-700/50 px-8 py-4 hover:bg-slate-800/50 transition-all hover:border-yellow-500/30">
+        <div
+          className={cn(
+            "w-full border px-8 py-4 hover:bg-slate-800/50 transition-all ",
+            !milestone.isComplete
+              ? "border-slate-700/50 bg-slate-800/30 hover:border-yellow-500/30"
+              : "border-yellow-500/50 bg-slate-800/50 hover:border-yellow-500/70"
+          )}
+        >
           <div className="flex  w-full items-center justify-between gap-4">
             <div>
               <p

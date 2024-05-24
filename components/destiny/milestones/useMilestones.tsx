@@ -4,10 +4,6 @@ import React from "react";
 import useSWR from "swr";
 import { useManifest } from "@/lib/manifest/useManifest";
 import { getMilestones } from "./actions";
-import {
-  DestinyActivityDefinition,
-  DestinyMilestoneDefinition,
-} from "bungie-api-ts/destiny2";
 
 export type ParsedMilestone = {
   hash: number;
